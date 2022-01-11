@@ -23,4 +23,4 @@ There will be a main server that all clients connect to with UDP sockets. When a
     - Unsure if this would work but fork off process to play a note via play cmd tool for infinite time, then if the key is unpressed send a signal to the process to stop 
 
 
-TODO: talk about signals, dividing work
+TODO: talk about signals, dividing work, timeline
