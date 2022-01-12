@@ -16,23 +16,25 @@ void err(int e)
         char *err_des = "\nerrno: ";
         char *err_msg = strerror(errno);
 
-        write(err_descriptor, err_des, sizeof(char) * strlen(err_des));
-        write(err_descriptor, err_msg, sizeof(char) * strlen(err_msg));
+        write(log_descriptor, err_des, sizeof(char) * strlen(err_des));
+        write(log_descriptor, err_msg, sizeof(char) * strlen(err_msg));
     }
 }
 
 void err_info(int e, char *msg)
 {    
+    char *msg_des = "\ninfo: ";
+   
+    write(log_descriptor, msg_des, sizeof(char) * strlen(msg_des));
+    write(log_descriptor, msg, sizeof(char) * strlen(msg));
+
     if (e == -1)
-    {
-        char *msg_des = "\ninfo: ";
+    { 
         char *err_des = "\nerrno: ";
         char *err_msg = strerror(errno);
-
-        write(err_descriptor, msg_des, sizeof(char) * strlen(msg_des));
-        write(err_descriptor, msg, sizeof(char) * strlen(msg));
-        write(err_descriptor, err_des, sizeof(char) * strlen(err_des));
-        write(err_descriptor, err_msg, sizeof(char) * strlen(err_msg));
+        
+        write(log_descriptor, err_des, sizeof(char) * strlen(err_des));
+        write(log_descriptor, err_msg, sizeof(char) * strlen(err_msg));
         
         exit(-1);
     }
@@ -40,5 +42,5 @@ void err_info(int e, char *msg)
 
 void info(char *msg)
 {
-    write(err_descriptor, msg, sizeof(char) * strlen(msg));
+    write(log_descriptor, msg, sizeof(char) * strlen(msg));
 }
