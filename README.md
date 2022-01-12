@@ -11,6 +11,11 @@ A user will connect to the server and be presented with a piano drawn in the ter
 Technical Design:
 There will be a main server that all clients connect to with TCP sockets. A linked list will be used to keep track of all the connected client. We'll create a struct to send note data from client to server. SoX cmd tool will be used along with exec and forking to play notes. Signals will be used to deal with stopping notes. NCurses will be used to deal with keyboard capture and the interface.
 
+Divying work:
+ - Ayan will focus on dealing with server
+ - Wilde will focus on dealing with the interface/input with NCurses
+ - Both will try to work on dealing with audio tools
+
 Timeline:
  - Basic funcitonality for server connection in the first day
  - Playing and stopping notes (functions independent of user input) should be completed within the first few days
