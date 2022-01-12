@@ -18,11 +18,11 @@ Timeline:
  - Use NCurses to handle keyboard input by the end of the first week (At this point we should have a server where users can play music together, but with no interface)
  - Generate a basic interface for our program
  - Further steps (in order of priority)
-  - Mute feature
-  - Recording and playing back music
-  - User files for customization of key's and interface
-  - Introduce a chat feature on the side of our interface
-  - Making our interface nicer
+   - Mute feature
+   - Recording and playing back music
+   - User files for customization of key's and interface
+   - Introduce a chat feature on the side of our interface
+   - Making our interface nicer
 
 
 IDEAS:
