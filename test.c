@@ -14,6 +14,23 @@ int main()
 
     while (1)
     {
+        char c[2] = "\0\0";
+
+        fgets(c, sizeof(c), stdin);
+
+        if (c[0] == 'p')
+        {
+            printf("play\n");
+            pid = play("sine", "C");
+        }
+        else if (c[0] == 's')
+        {
+            printf("%d, stop\n", pid);
+            stop(pid);
+        }
+
+    while (1)
+    {
         input();
     }
 
