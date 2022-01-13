@@ -16,7 +16,7 @@ int play(char *instrument, char *note)
     }
     else
     {
-        char *cmd[] = {"play", "-n", "synth", "100", instrument, note, NULL};
+        char *cmd[] = {"play", "-qn", "synth", "100", instrument, note, NULL};
         execvp(cmd[0], cmd);
 
         err_info(-1, "execvp to play sound did not take over process");
