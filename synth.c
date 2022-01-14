@@ -2,7 +2,7 @@
 #include <signal.h>
 #include <unistd.h>
 
-#include "player.h"
+#include "synth.h"
 #include "log.h"
 
 int play(char *instrument, char *note)

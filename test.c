@@ -4,7 +4,7 @@
 #include <sys/types.h>
 
 #include "log.h"
-#include "player.h"
+#include "synth.h"
 #include "input.h"
 
 int main()
@@ -12,22 +12,7 @@ int main()
     setup_log(STDOUT_FILENO);
     int pid = 0;
 
-    while (1)
-    {
-        char c[2] = "\0\0";
-
-        fgets(c, sizeof(c), stdin);
-
-        if (c[0] == 'p')
-        {
-            printf("play\n");
-            pid = play("sine", "C");
-        }
-        else if (c[0] == 's')
-        {
-            printf("%d, stop\n", pid);
-            stop(pid);
-        }
+    setup_notes();
 
     while (1)
     {
