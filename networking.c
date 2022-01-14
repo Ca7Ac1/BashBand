@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -19,7 +20,10 @@ int server_setup(char *addr, char *port)
     struct addrinfo *results;
     getaddrinfo(addr, port, hints, &results);
 
+    int option = 1;
     int server_socket = socket(results->ai_family, results->ai_socktype, results->ai_protocol);
+    setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
+
     err_info(server_socket, "Server socket creation");
 
     int bind_err = bind(server_socket, results->ai_addr, results->ai_addrlen);
@@ -58,30 +62,33 @@ int client_setup(char *addr, char *port)
     int client_socket = socket(results->ai_family, results->ai_socktype, results->ai_protocol);
     connect(client_socket, results->ai_addr, results->ai_addrlen);
 
+    free(hints);
+    freeaddrinfo(results);
+
     return client_socket;
 }
 
 int read_connections(connections *c)
 {
-    fd_set *readfd;
-    FD_ZERO(readfd);
+    fd_set readfd;
+    FD_ZERO(&readfd);
 
     int max = 0;
     connections *temp = c;
     while (temp)
     {
-        FD_SET(temp->descriptor, readfd);
-        max = temp->descriptor > max ? c->descriptor : max;
-
+        FD_SET(temp->descriptor, &readfd);
+        max = temp->descriptor > max ? temp->descriptor : max;
+        
         temp = temp->next;
     }
 
-    int size = select(max + 1, readfd, NULL, NULL, NULL);
+    int size = select(max + 1, &readfd, NULL, NULL, NULL);
     err_info(size, "read from multiple descriptors");
 
     while (c)
     {
-        if (FD_ISSET(c->descriptor, readfd))
+        if (FD_ISSET(c->descriptor, &readfd))
         {
             return c->descriptor;
         }
@@ -93,11 +100,6 @@ int read_connections(connections *c)
 
 connections *add_connection(connections *c, int descriptor, int id)
 {
-    if (c == NULL)
-    {
-        c = malloc(sizeof(connections));
-    }
-
     connections *temp = malloc(sizeof(connections));
     temp->descriptor = descriptor;
     temp->id = id;
