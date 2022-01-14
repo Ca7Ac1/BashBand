@@ -5,17 +5,6 @@
 #define STOP_NOTE_MSG 's'
 #define CLOSE_CONNECTION_MSG 'q'
 
-typedef struct message
-{
-    char type;
-    union data
-    {
-        note_message note_data;
-        close_message close_data;
-        stop_message stop_data;
-    } data;
-} message;
-
 typedef struct note_message
 {
     char instrument[10];
@@ -31,6 +20,17 @@ typedef struct close_message
 typedef struct stop_message
 {
     char note_id[100];
-} close_message;
+} stop_message;
+
+typedef struct message
+{
+    char type;
+    union data
+    {
+        note_message note_data;
+        close_message close_data;
+        stop_message stop_data;
+    } data;
+} message;
 
 #endif
