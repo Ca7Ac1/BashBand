@@ -16,9 +16,8 @@ int main()
 void server() 
 {
 	int server_socket = server_setup(SERVER_ADDR, SERVER_PORT);
-	server_connect(server_socket);
-
 	connections *c = add_connection(NULL, server_socket, -1);
+	
 	while (1)
 	{	
 		int rd = read_connections(c);
