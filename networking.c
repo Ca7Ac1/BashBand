@@ -45,7 +45,7 @@ int server_connect(int server_socket)
     return connection;
 }
 
-int client(char *addr, char *port)
+int client_setup(char *addr, char *port)
 {   
     struct addrinfo *hints = calloc(1, sizeof(struct addrinfo));
     hints->ai_family = AF_INET;
@@ -59,4 +59,87 @@ int client(char *addr, char *port)
     connect(client_socket, results->ai_addr, results->ai_addrlen);
 
     return client_socket;
+}
+
+int read_connections(connections *c)
+{
+    fd_set *readfd;
+    FD_ZERO(readfd);
+
+    int max = 0;
+    connections *temp = c;
+    while (temp)
+    {
+        FD_SET(temp->descriptor, readfd);
+        max = temp->descriptor > max ? c->descriptor : max;
+
+        temp = temp->next;
+    }
+
+    int size = select(max + 1, readfd, NULL, NULL, NULL);
+    err_info(size, "read from multiple descriptors");
+
+    while (c)
+    {
+        if (FD_ISSET(c->descriptor, readfd))
+        {
+            return c->descriptor;
+        }
+    }
+
+    err(-1);
+    return -1;
+}
+
+connections *add_connection(connections *c, int descriptor, int id)
+{
+    if (c == NULL)
+    {
+        c = malloc(sizeof(connections));
+    }
+
+    connections *temp = malloc(sizeof(connections));
+    temp->descriptor = descriptor;
+    temp->id = id;
+    temp->next = c;
+
+    return temp;
+}
+
+connections *remove_connection(connections *c, int id)
+{
+    if (c && c->id == id)
+    {
+        connections *temp = c;
+        c = c-> next;
+        free(temp);
+
+        return c;
+    }
+
+    while (c->next)
+    {
+        if (c->next->id == id)
+        {
+            connections *temp = c->next;
+            c->next = c->next->next;
+            free(temp);
+
+            return c;
+        }
+    }
+
+    return c;
+}
+
+connections *free_connections(connections *c)
+{
+    while (c)
+    {
+        connections *temp = c;
+        c = c-> next;
+        free(temp); 
+    }
+
+    return NULL;
 }
