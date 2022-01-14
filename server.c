@@ -9,28 +9,26 @@
 
 int main()
 {
+	setup_log(STDOUT_FILENO);
 	server();
 }
 
 void server() 
 {
 	int server_socket = server_setup(SERVER_ADDR, SERVER_PORT);
-	int connection_id = 0;
+	server_connect(server_socket);
 
-	connections *c;
-	c = add_connections(c, server_socket, -1);
+	connections *c = add_connection(NULL, server_socket, -1);
 	while (1)
-	{
+	{	
 		int rd = read_connections(c);
-		
+
 		if (rd == server_socket)
 		{
 			int new_connection = server_connect(server_socket);
-			c = add_connections(c, new_connection, connection_id);
+			c = add_connection(c, new_connection, new_connection);
 			
-			write(c, &connection_id, sizeof(connection_id));
-
-			connection_id++;
+			write(new_connection, &new_connection, sizeof(new_connection));
 		}
 		else
 		{
@@ -41,8 +39,6 @@ void server()
 			handle_message(msg);
 		}
 	}
-
-	return 0;
 }
 
 void handle_message(message msg)
