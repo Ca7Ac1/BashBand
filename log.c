@@ -43,5 +43,6 @@ void err_info(int e, char *msg)
 
 void info(char *msg)
 {
+    write(log_descriptor, "\n", sizeof(char));
     write(log_descriptor, msg, sizeof(char) * strlen(msg));
 }
