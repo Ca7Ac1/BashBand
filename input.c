@@ -24,12 +24,18 @@ void setup_notes() {
         notes[9].note[0] = 'A';
         notes[10].note[0] = 'A';
         notes[11].note[0] = 'B';
-        for(int i = 0; i < 12; i++) {
-            if(i==1||i==3||i==6||i==8||i==10) {
+
+        for(int i = 0; i < 12; i++) 
+        {
+            if(i==1||i==3||i==6||i==8||i==10) 
+            {
                 notes[i].note[1] = '#';
-            } else {
+            } 
+            else
+            {
                 notes[i].note[1] = '\0';
             }
+            
             notes[i].note[2] = '\0';
             notes[i].note[3] = '\0';
             printf("%s\n", notes[i].note);

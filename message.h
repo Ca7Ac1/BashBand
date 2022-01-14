@@ -18,19 +18,19 @@ typedef struct message
 
 typedef struct note_message
 {
-    char[10] instrument;
-    char[3] note;
-    char[100] note_id;
+    char instrument[10];
+    char note[3];
+    char note_id[100];
 } note_message;
 
-typdef struct close_message
+typedef struct close_message
 {
     int id;
 } close_message;
 
-typdef struct stop_message
+typedef struct stop_message
 {
-    char[100] note_id;
+    char note_id[100];
 } close_message;
 
 #endif
