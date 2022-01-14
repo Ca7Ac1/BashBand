@@ -4,6 +4,7 @@
 #define PLAY_NOTE_MSG 'p'
 #define STOP_NOTE_MSG 's'
 #define CLOSE_CONNECTION_MSG 'q'
+#define KICK_CONNECTION_MSG 'k'
 
 typedef struct note_message
 {
@@ -29,7 +30,7 @@ typedef struct message
     {
         note_message note_data;
         close_message close_data;
-        stop_message stop_data;
+        stop_message stop_data
     } data;
 } message;
 

@@ -14,12 +14,13 @@ int main()
 	client();
 }
 
-void client() 
+void client()
 {
     int client_socket = client_setup(CLIENT_ADDR, CLIENT_PORT);
 
     int id = 999;
     read(client_socket, &id, sizeof(id));
-
     printf("%d connected\n", id);
+
+    while (1) {}
 }

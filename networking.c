@@ -8,6 +8,7 @@
 #include <netdb.h>
 
 #include "networking.h"
+#include "message.h"
 #include "log.h"
 
 int server_setup(char *addr, char *port)
@@ -50,7 +51,7 @@ int server_connect(int server_socket)
 }
 
 int client_setup(char *addr, char *port)
-{   
+{
     struct addrinfo *hints = calloc(1, sizeof(struct addrinfo));
     hints->ai_family = AF_INET;
     hints->ai_socktype = SOCK_STREAM;
@@ -79,7 +80,7 @@ int read_connections(connections *c)
     {
         FD_SET(temp->descriptor, &readfd);
         max = temp->descriptor > max ? temp->descriptor : max;
-        
+
         temp = temp->next;
     }
 
@@ -92,25 +93,31 @@ int read_connections(connections *c)
         {
             return c->descriptor;
         }
+
+        c = c->next;
     }
 
     err(-1);
     return -1;
 }
 
-connections *add_connection(connections *c, int descriptor, int id)
+connections *add_connection(connections *c, int descriptor)
 {
     connections *temp = malloc(sizeof(connections));
     temp->descriptor = descriptor;
-    temp->id = id;
     temp->next = c;
 
     return temp;
 }
 
-connections *remove_connection(connections *c, int id)
+connections *write_connections(connections *c, message msg)
 {
-    if (c && c->id == id)
+
+}
+
+connections *remove_connection(connections *c, int descriptor)
+{
+    if (c && c->descriptor == descriptor)
     {
         connections *temp = c;
         c = c-> next;
@@ -121,7 +128,7 @@ connections *remove_connection(connections *c, int id)
 
     while (c->next)
     {
-        if (c->next->id == id)
+        if (c->next->descriptor == descriptor)
         {
             connections *temp = c->next;
             c->next = c->next->next;
@@ -140,7 +147,7 @@ connections *free_connections(connections *c)
     {
         connections *temp = c;
         c = c-> next;
-        free(temp); 
+        free(temp);
     }
 
     return NULL;
