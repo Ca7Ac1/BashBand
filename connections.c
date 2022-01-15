@@ -23,7 +23,7 @@ void set_connection(connections *c, int descriptor, char read, char write)
             c->read = read;
             c->write = write;
 
-            return c;
+            return;
         }
     }
 }
