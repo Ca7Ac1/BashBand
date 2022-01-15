@@ -26,8 +26,6 @@ void set_connection(connections *c, int descriptor, char read, char write)
             return c;
         }
     }
-
-    return c;
 }
 
 connections *remove_connection(connections *c, int descriptor)
