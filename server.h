@@ -7,6 +7,7 @@
 #include "message.h"
 
 void server();
-void handle_message(message msg);
+void handle_message(connections *c, message msg, int rd);
+void close_connection(connections *c, message msg, int rd);
 
 #endif
