@@ -1,9 +1,7 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/socket.h>
 #include <netdb.h>
 
@@ -87,6 +85,7 @@ int read_connections(connections *c)
         }
     }
 
+    info("blocking on select");
     int size = select(max + 1, &readfd, NULL, NULL, NULL);
     err_info(size, "read from multiple descriptors");
 
@@ -104,7 +103,15 @@ int read_connections(connections *c)
     return -1;
 }
 
-connections *write_connections(connections *c, message msg)
+void write_connections(connections *c, message msg)
 {
+    while (c)
+    {
+        if (c->write)
+        {
+            write(c->descriptor, &msg, sizeof(message));
+        }
 
+        c = c->next;
+    }
 }
