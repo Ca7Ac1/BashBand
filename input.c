@@ -54,3 +54,36 @@ void input() {
         play("pluck", "C");
     }
 }
+
+/* promising input code. Would need to use a pipe and seperate process, 
+   but removes the need for external library to capture key event
+
+    #include <ncurses.h>
+ 
+    int main() 
+    {
+        char c;
+        initscr();
+        cbreak();
+        noecho();
+        keypad(stdscr, TRUE);
+
+        while('q' != (c = getch())) 
+        {
+            printw("%c\n", c);
+            if(halfdelay(5) != ERR) 
+            {
+                while(getch() == c)
+                {
+                    if(halfdelay(1) == ERR) break; 
+                }
+            }
+            
+            printw("Here\n");
+            cbreak(); 
+        }
+
+        endwin();
+        return 0; 
+    }
+ */
