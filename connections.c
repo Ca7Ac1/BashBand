@@ -25,6 +25,8 @@ void set_connection(connections *c, int descriptor, char read, char write)
 
             return;
         }
+
+        c = c->next;
     }
 }
 
