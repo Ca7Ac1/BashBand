@@ -39,23 +39,39 @@ void server()
 
 			if (amt_read < sizeof(message))
 			{
-				c = remove_connection(c, rd);
-				msg.type = KICK_CONNECTION_MSG;
-				write(rd, &msg, sizeof(message));
-
-				msg.type = CLOSE_CONNECTION_MSG;
-				msg.data.close_data.id = rd;
-				write_connections(c, msg);
+				close_connection(c, msg, rd);
 			}
 			else
 			{
-				handle_message(msg);
+				handle_message(c, msg, rd);
 			}
 		}
 	}
 }
 
-void handle_message(message msg)
+void handle_message(connections *c, message msg, int rd)
 {
+	if (msg.type == PLAY_NOTE_MSG || msg.type == STOP_NOTE_MSG)
+	{
+		set_connection(c, rd, 0, 0);
 
+		write_connections(c, msg);
+
+		set_connection(c, rd, 1, 1);
+	}
+	else if (msg.type == CLOSE_CONNECTION_MSG)
+	{
+		close_connection(c, msg, rd);
+	}
+}
+
+void close_connection(connections *c, message msg, int rd)
+{
+	c = remove_connection(c, rd);
+	msg.type = KICK_CONNECTION_MSG;
+	write(rd, &msg, sizeof(message));
+
+	msg.type = CLOSE_CONNECTION_MSG;
+	msg.data.close_data.id = rd;
+	write_connections(c, msg);
 }
