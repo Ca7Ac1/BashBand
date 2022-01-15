@@ -19,7 +19,7 @@ void server()
 	int server_socket = server_setup(SERVER_ADDR, SERVER_PORT);
 	
 	connections *c = add_connection(NULL, server_socket);
-	c = set_connection(c, server_socket, 1, 0);
+	set_connection(c, server_socket, 1, 0);
 
 	while (1)
 	{
@@ -39,17 +39,17 @@ void server()
 
 			if (amt_read < sizeof(message))
 			{
-				close_connection(c, msg, rd);
+				c = close_connection(c, msg, rd);
 			}
 			else
 			{
-				handle_message(c, msg, rd);
+				c = handle_message(c, msg, rd);
 			}
 		}
 	}
 }
 
-void handle_message(connections *c, message msg, int rd)
+connections *handle_message(connections *c, message msg, int rd)
 {
 	if (msg.type == PLAY_NOTE_MSG || msg.type == STOP_NOTE_MSG)
 	{
@@ -61,12 +61,16 @@ void handle_message(connections *c, message msg, int rd)
 	}
 	else if (msg.type == CLOSE_CONNECTION_MSG)
 	{
-		close_connection(c, msg, rd);
+		c = close_connection(c, msg, rd);
 	}
+
+	return c;
 }
 
-void close_connection(connections *c, message msg, int rd)
+connections *close_connection(connections *c, message msg, int rd)
 {
+	info("connection being removed from server");
+
 	c = remove_connection(c, rd);
 	msg.type = KICK_CONNECTION_MSG;
 	write(rd, &msg, sizeof(message));
@@ -74,4 +78,6 @@ void close_connection(connections *c, message msg, int rd)
 	msg.type = CLOSE_CONNECTION_MSG;
 	msg.data.close_data.id = rd;
 	write_connections(c, msg);
+
+	return c;
 }
