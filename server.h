@@ -5,6 +5,7 @@
 #define SERVER_PORT "9001"
 
 #include "message.h"
+#include "connections.h"
 
 void server();
 void handle_message(connections *c, message msg, int rd);

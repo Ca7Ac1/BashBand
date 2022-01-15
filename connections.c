@@ -14,7 +14,7 @@ connections *add_connection(connections *c, int descriptor)
     return temp;
 }
 
-connections *set_connection(connections *c, int descriptor, char read, char write)
+void set_connection(connections *c, int descriptor, char read, char write)
 {
     while (c)
     {
