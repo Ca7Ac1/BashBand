@@ -21,6 +21,4 @@ void client()
     int id = 999;
     read(client_socket, &id, sizeof(id));
     printf("%d connected\n", id);
-
-    while (1) {}
 }

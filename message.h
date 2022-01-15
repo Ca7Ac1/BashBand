@@ -30,7 +30,7 @@ typedef struct message
     {
         note_message note_data;
         close_message close_data;
-        stop_message stop_data
+        stop_message stop_data;
     } data;
 } message;
 

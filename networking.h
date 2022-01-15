@@ -10,6 +10,6 @@ int server_setup(char *addr, char *port);
 int server_connect(int server_socket);
 int client_setup(char *addr, char *port);
 int read_connections(connections *c);
-int write_connections(connections *c, int *exclude )
+void write_connections(connections *c, message msg);
 
 #endif
