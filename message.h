@@ -3,6 +3,7 @@
 
 #define PLAY_NOTE_MSG 'p'
 #define STOP_NOTE_MSG 's'
+#define OPEN_CONNECTION_MSG 'j'
 #define CLOSE_CONNECTION_MSG 'q'
 #define KICK_CONNECTION_MSG 'k'
 
