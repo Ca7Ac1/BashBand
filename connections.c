@@ -6,9 +6,27 @@ connections *add_connection(connections *c, int descriptor)
 {
     connections *temp = malloc(sizeof(connections));
     temp->descriptor = descriptor;
+    temp->read = 1;
+    temp->write = 1;
     temp->next = c;
 
     return temp;
+}
+
+connections *set_connection(connections *c, int descriptor, char read, char write)
+{
+    while (c->next)
+    {
+        if (c->descriptor == descriptor)
+        {
+            c->read = read;
+            c->write = write;
+
+            return c;
+        }
+    }
+
+    return c;
 }
 
 connections *remove_connection(connections *c, int descriptor)

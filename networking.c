@@ -78,10 +78,13 @@ int read_connections(connections *c)
     connections *temp = c;
     while (temp)
     {
-        FD_SET(temp->descriptor, &readfd);
-        max = temp->descriptor > max ? temp->descriptor : max;
+        if (temp->read)
+        {
+            FD_SET(temp->descriptor, &readfd);
+            max = temp->descriptor > max ? temp->descriptor : max;
 
-        temp = temp->next;
+            temp = temp->next;
+        }
     }
 
     int size = select(max + 1, &readfd, NULL, NULL, NULL);
