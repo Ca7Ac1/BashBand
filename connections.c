@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "connections.h"
 
@@ -15,7 +16,7 @@ connections *add_connection(connections *c, int descriptor)
 
 connections *set_connection(connections *c, int descriptor, char read, char write)
 {
-    while (c->next)
+    while (c)
     {
         if (c->descriptor == descriptor)
         {
@@ -50,6 +51,8 @@ connections *remove_connection(connections *c, int descriptor)
 
             return c;
         }
+
+        c = c->next;
     }
 
     return c;
@@ -65,4 +68,13 @@ connections *free_connections(connections *c)
     }
 
     return NULL;
+}
+
+void print_connections(connections *c)
+{
+    while (c)
+    {
+        printf("descriptor: %d \n", c->descriptor);
+        c = c->next;
+    }  
 }
