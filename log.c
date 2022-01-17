@@ -19,6 +19,8 @@ void err(int e)
 
         write(log_descriptor, err_des, sizeof(char) * strlen(err_des));
         write(log_descriptor, err_msg, sizeof(char) * strlen(err_msg));
+
+        exit(-1);
     }
 }
 
