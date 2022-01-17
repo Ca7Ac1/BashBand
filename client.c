@@ -13,16 +13,16 @@
 int main()
 {
     setup_log(STDOUT_FILENO);
-	client();
+    client();
 }
 
 void client()
 {
     int client_socket = client_setup(CLIENT_ADDR, CLIENT_PORT);
-	
-	connections *c = add_connection(NULL, client_socket);
+
+    connections *c = add_connection(NULL, client_socket);
     c = add_connection(c, STDIN_FILENO);
-	set_connection(c, STDIN_FILENO, 1, 0);
+    set_connection(c, STDIN_FILENO, 1, 0);
 
     int id = -1;
     read(client_socket, &id, sizeof(id));
@@ -39,7 +39,7 @@ void client()
 
         if (rd == STDIN_FILENO)
         {
-            //TODO: use input.c for handling getting keystrokes
+            // TODO: use input.c for handling getting keystrokes
             char read_input[2] = "\0\0";
 
             fgets(read_input, sizeof(read_input), stdin);
@@ -50,7 +50,7 @@ void client()
 
                 message msg;
                 msg.type = PLAY_NOTE_MSG;
-                
+
                 note_message *data = &msg.data.note_data;
                 strcpy(data->instrument, "pluck");
                 strcpy(data->note, "C");
@@ -66,9 +66,9 @@ void client()
 
                 message msg;
                 msg.type = STOP_NOTE_MSG;
-                
+
                 stop_message *data = &msg.data.stop_data;
-                
+
                 sprintf(msg_id, "%d%s%s", id, "pluck", "C");
                 strcpy(data->note_id, "");
 
@@ -78,8 +78,8 @@ void client()
         else if (rd == client_socket)
         {
             message msg;
-            
-			int amt_read = read(rd, &msg, sizeof(message));
+
+            int amt_read = read(rd, &msg, sizeof(message));
             err(amt_read == sizeof(message) ? 1 : -1);
 
             if (msg.type == KICK_CONNECTION_MSG)

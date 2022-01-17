@@ -35,7 +35,7 @@ connections *remove_connection(connections *c, int descriptor)
     if (c && c->descriptor == descriptor)
     {
         connections *temp = c;
-        c = c-> next;
+        c = c->next;
         free(temp);
 
         return c;
@@ -63,7 +63,7 @@ connections *free_connections(connections *c)
     while (c)
     {
         connections *temp = c;
-        c = c-> next;
+        c = c->next;
         free(temp);
     }
 
@@ -76,5 +76,5 @@ void print_connections(connections *c)
     {
         printf("descriptor: %d \n", c->descriptor);
         c = c->next;
-    }  
+    }
 }

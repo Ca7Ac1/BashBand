@@ -2,7 +2,8 @@
 #define INPUT_H
 
 // this name is beautiful appreciate it pls
-typedef struct key {
+typedef struct key
+{
     char button;
     // C#4 null
     char note[4];

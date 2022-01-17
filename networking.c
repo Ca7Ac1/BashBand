@@ -42,7 +42,7 @@ int server_connect(int server_socket)
     struct sockaddr_storage address;
     socklen_t sock_size = sizeof(address);
 
-    int connection = accept(server_socket, (struct sockaddr *) &address, &sock_size);
+    int connection = accept(server_socket, (struct sockaddr *)&address, &sock_size);
     err_info(connection, "accepting incoming client connection");
 
     return connection;
