@@ -29,23 +29,25 @@ void stop(int pid)
     err(kill(pid, SIGKILL));
 }
 
-notes *add_note(notes *n, char *instrument, char *note)
+notes *add_note(notes *n, char *instrument, char *note, char *id)
 {
     notes *temp = malloc(sizeof(notes));
 
     strcpy(temp->note, note);
     strcpy(temp->instrument, instrument);
+    strcpy(temp->id, id);
+
     temp->pid = play(instrument, note);
     temp->next = n;
 
     return temp;
 }
 
-notes *remove_note(notes *n, int pid)
+notes *remove_note(notes *n, char *id)
 {
-    if (n && n->pid == pid)
+    if (n && strcmp(n->id, id) == 0)
     {
-        stop(pid);
+        stop(n->pid);
 
         notes *temp = n;
         n = n->next;
@@ -56,9 +58,9 @@ notes *remove_note(notes *n, int pid)
 
     while (n->next)
     {
-        if (n->next->pid == pid)
+        if (strcmp(n->next->id, id) == 0)
         {
-            stop(pid);
+            stop(n->next->pid);
 
             notes *temp = n->next;
             n->next = n->next->next;
