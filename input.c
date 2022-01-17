@@ -43,6 +43,8 @@ void setup_notes() {
     // }
 }
 
+static int pids[3];
+
 void input() {
     char c[2] = "\0\0";
 
@@ -51,7 +53,17 @@ void input() {
     if (c[0] == 'p')
     {
         printf("play\n");
-        play("pluck", "C");
+        pids[0] = play("pluck", "C");
+        pids[1] = play("pluck", "E");
+        pids[2] = play("pluck", "G");
+    }
+
+    if (c[0] == 's')
+    {
+        printf("stop\n");
+        stop(pids[0]);
+        stop(pids[1]);
+        stop(pids[2]);
     }
 }
 
