@@ -28,9 +28,9 @@ void client()
     read(client_socket, &id, sizeof(id));
     err(id);
 
-    char msg_id[100];
+    char msg_id[25];
 
-    int pid;
+    notes *n = NULL;
 
     while (1)
     {
@@ -40,37 +40,37 @@ void client()
         if (rd == STDIN_FILENO)
         {
             // TODO: use input.c for handling getting keystrokes
-            char read_input[2] = "\0\0";
+            char *instrument = "pluck";
+            char *note = "C";
+            char type[2] = "\0\0";
 
-            fgets(read_input, sizeof(read_input), stdin);
+            fgets(type, sizeof(type), stdin);
 
-            if (read_input[0] == 'p')
+            sprintf(msg_id, "%d-%s-%s", id, instrument, note);
+
+            if (type[0] == 'p')
             {
-                pid = play("pluck", "C");
+                n = add_note(n, "pluck", "C", msg_id);
 
                 message msg;
                 msg.type = PLAY_NOTE_MSG;
 
                 note_message *data = &msg.data.note_data;
-                strcpy(data->instrument, "pluck");
-                strcpy(data->note, "C");
-
-                sprintf(msg_id, "%d%s%s", id, "pluck", "C");
-                strcpy(data->note_id, "");
+                strcpy(data->instrument, instrument);
+                strcpy(data->note, note);
+                strcpy(data->note_id, msg_id);
 
                 write_connections(c, msg);
             }
-            else if (read_input[0] == 's')
+            else if (type[0] == 's')
             {
-                stop(pid);
-
+                n = remove_note(n, msg_id);
+                
                 message msg;
                 msg.type = STOP_NOTE_MSG;
 
                 stop_message *data = &msg.data.stop_data;
-
-                sprintf(msg_id, "%d%s%s", id, "pluck", "C");
-                strcpy(data->note_id, "");
+                strcpy(data->note_id, msg_id);
 
                 write_connections(c, msg);
             }
@@ -85,19 +85,23 @@ void client()
             if (msg.type == KICK_CONNECTION_MSG)
             {
                 printf("Host exited, or you were kicked\n");
+                n = free_notes(n);
                 exit(0);
             }
             else if (msg.type == OPEN_CONNECTION_MSG)
             {
+                // connect_message *data = &msg.data.connect_data;
                 printf("Another person connected\n");
             }
             else if (msg.type == PLAY_NOTE_MSG)
             {
-                pid = play("pluck", "C");
+                note_message *data = &msg.data.note_data;
+                n = add_note(n, data->instrument, data->note, data->note_id);
             }
             else if (msg.type == STOP_NOTE_MSG)
             {
-                stop(pid);
+                stop_message *data = &msg.data.stop_data;
+                n = remove_note(n, data->note_id);
             }
         }
     }

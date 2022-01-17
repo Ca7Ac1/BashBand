@@ -11,7 +11,7 @@ typedef struct note_message
 {
     char instrument[10];
     char note[3];
-    char note_id[100];
+    char note_id[25];
 } note_message;
 
 typedef struct close_message
@@ -21,7 +21,7 @@ typedef struct close_message
 
 typedef struct stop_message
 {
-    char note_id[100];
+    char note_id[25];
 } stop_message;
 
 typedef struct message
