@@ -9,8 +9,11 @@ typedef struct key
     char note[4];
 } key;
 
-void setup_notes();
+#define NOTES 12
 
-void input();
+
+key* setup_notes();
+
+void input(key* key_notes);
 
 #endif

@@ -12,11 +12,13 @@ int main()
     setup_log(STDOUT_FILENO);
     int pid = 0;
 
-    setup_notes();
+    key *notes = setup_notes();
+
+    // printf("%s\n", notes);
 
     while (1)
     {
-        input();
+        input(notes);
     }
 
     return 0;
