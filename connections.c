@@ -32,7 +32,12 @@ void set_connection(connections *c, int descriptor, char read, char write)
 
 connections *remove_connection(connections *c, int descriptor)
 {
-    if (c && c->descriptor == descriptor)
+    if (!c)
+    {
+        return c;
+    }
+    
+    if (c->descriptor == descriptor)
     {
         connections *temp = c;
         c = c->next;

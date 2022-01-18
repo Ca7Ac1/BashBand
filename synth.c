@@ -45,7 +45,12 @@ notes *add_note(notes *n, char *instrument, char *note, char *id)
 
 notes *remove_note(notes *n, char *id)
 {
-    if (n && strcmp(n->id, id) == 0)
+    if (!n)
+    {
+        return n;
+    }
+
+    if (strcmp(n->id, id) == 0)
     {
         stop(n->pid);
 
