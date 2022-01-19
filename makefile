@@ -16,7 +16,7 @@ connections.o: connections.c connections.h
 	gcc -c connections.c
 
 input.o: input.c input.h
-	gcc -c input.c
+	gcc -c input.c -lncurses
 
 log.o: log.c log.h
 	gcc -c log.c
@@ -28,7 +28,7 @@ synth.o: synth.c synth.h
 	gcc -c synth.c
 
 test: test.o input.o synth.o
-	gcc -o test test.o log.o input.o synth.o
+	gcc -o test test.o log.o input.o synth.o -lncurses
 
 test.o: test.c
 	gcc -c test.c
