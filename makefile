@@ -32,3 +32,11 @@ test: test.o input.o synth.o
 
 test.o: test.c
 	gcc -c test.c
+
+clean: 
+	rm -f *.o
+	rm -f *.exe
+	rm -f server
+	rm -f client
+	rm -f test
+	rm -f a.out
