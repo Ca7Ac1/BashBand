@@ -1,6 +1,8 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#define NOTES 12
+
 // this name is beautiful appreciate it pls
 typedef struct key
 {
@@ -9,11 +11,7 @@ typedef struct key
     char note[4];
 } key;
 
-#define NOTES 12
-
-
 key* setup_notes();
-
-void input(key* key_notes);
+int input();
 
 #endif

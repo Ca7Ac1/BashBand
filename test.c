@@ -9,17 +9,20 @@
 
 int main()
 {
-    setup_log(STDOUT_FILENO);
-    int pid = 0;
+    input();
 
-    key *notes = setup_notes();
+    while (1) {}
+    // setup_log(STDOUT_FILENO);
+    // int pid = 0;
 
-    // printf("%s\n", notes);
+    // key *notes = setup_notes();
 
-    while (1)
-    {
-        input(notes);
-    }
+    // // printf("%s\n", notes);
 
-    return 0;
+    // while (1)
+    // {
+    //     input(notes);
+    // }
+
+    // return 0;
 }
