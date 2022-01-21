@@ -35,7 +35,7 @@ int input()
     pipe(pipe_des);
 
     int c = fork();
-    err_info(c, "forking for input");
+    err(c);
 
     if (c)
     {
@@ -53,6 +53,19 @@ int input()
 
     char instrument[10];
     strcpy(instrument, "sin");
+
+    // test
+    // note_message data;
+    // data.note_id[0] = 'p';
+    // strcpy(data.note, "C");
+    // strcpy(data.instrument, "sin");
+    // write(output, &data, sizeof(note_message));
+
+    // data.note_id[0] = 's';
+    // strcpy(data.note, "C");
+    // strcpy(data.instrument, "sin");
+    // write(output, &data, sizeof(note_message));
+    //
 
     while (1)
     {
@@ -84,7 +97,7 @@ int input()
             {
                 SDL_KeyboardEvent *key = &key_event.key;
                 char keystroke = SDL_GetKeyName(key->keysym.sym)[0];
-                
+
                 for (int i = 0; i < NOTES; i++)
                 {
                     if (keys[i].button == keystroke)
@@ -107,6 +120,7 @@ int input()
 
     free(keys);
     free(held);
-    
+
     SDL_Quit();
+    exit(0);
 }

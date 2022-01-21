@@ -48,7 +48,9 @@ void client()
         if (rd == input_fd)
         {
             note_message input_data;
-            read(rd, &input_data, sizeof(note_message));
+            int amt_read = read(rd, &input_data, sizeof(note_message));
+
+            err(amt_read < sizeof(note_message) ? -1 : 1);
 
             sprintf(msg_id, "%d-%s-%s", id, input_data.instrument, input_data.note);
 
