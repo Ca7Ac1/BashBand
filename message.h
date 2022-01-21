@@ -14,15 +14,21 @@ typedef struct note_message
     char note_id[25];
 } note_message;
 
-typedef struct close_message
-{
-    int id;
-} close_message;
-
 typedef struct stop_message
 {
     char note_id[25];
 } stop_message;
+
+typedef struct open_message
+{
+    int id; 
+    char name[100];
+} open_message;
+
+typedef struct close_message
+{
+    int id;
+} close_message;
 
 typedef struct message
 {
@@ -31,6 +37,7 @@ typedef struct message
     {
         note_message note_data;
         close_message close_data;
+        open_message open_data;
         stop_message stop_data;
     } data;
 } message;

@@ -3,8 +3,8 @@ all: server client test
 server: server.o log.o networking.o connections.o server.h log.h networking.h connections.h
 	gcc -o server server.o log.o connections.o networking.o
 
-client: client.o log.o networking.o synth.o connections.o client.h log.h networking.h connections.h synth.h
-	gcc -o client client.o log.o connections.o synth.o networking.o
+client: client.o log.o networking.o synth.o connections.o input.o client.h log.h networking.h connections.h synth.h input.h
+	gcc -o client client.o log.o connections.o synth.o networking.o input.o `sdl2-config --cflags --libs` -Wall
 
 server.o: server.c server.h
 	gcc -c server.c
@@ -19,7 +19,7 @@ gui.o: gui.c gui.h
 	gcc -c gui.c `sdl2-config --cflags --libs`
 
 input.o: input.c input.h
-	gcc -c input.c -lncurses
+	gcc -c input.c
 
 log.o: log.c log.h
 	gcc -c log.c
@@ -31,12 +31,12 @@ synth.o: synth.c synth.h
 	gcc -c synth.c
 
 test: test.o input.o synth.o gui.o
-	gcc -o test test.o log.o input.o synth.o gui.o -lncurses `sdl2-config --cflags --libs`
+	gcc -o test test.o log.o input.o synth.o gui.o -lncurses `sdl2-config --cflags --libs` -Wall
 
 test.o: test.c
-	gcc -c test.c `sdl2-config --cflags --libs`
+	gcc -c test.c `sdl2-config --cflags --libs` -Wall
 
-clean: 
+clean:
 	rm -f *.o
 	rm -f *.exe
 	rm -f server

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include "log.h"
 #include "synth.h"
@@ -15,9 +15,8 @@ int main()
     SDL_Window * window;
     SDL_Renderer * renderer;
 
-    init(window, renderer);
+    init(&window, &renderer);
     
-    printf("%s %s\n", window, renderer);
 
     while (loop(window, renderer)) { 
         SDL_Delay(10); 

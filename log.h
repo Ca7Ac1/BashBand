@@ -1,5 +1,5 @@
-#ifndef log_H
-#define log_H
+#ifndef LOG_H
+#define LOG_H
 
 static int log_descriptor = -1;
 

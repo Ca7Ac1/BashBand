@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <ncurses.h>
+#include <SDL2/SDL.h>
 
 #include "log.h"
-#include "synth.h"
+#include "message.h"
 #include "input.h"
 
 key *setup_notes()
@@ -44,23 +44,69 @@ int input()
     }
 
     close(pipe_des[0]);
+    int output = pipe_des[1];
 
     key *keys = setup_notes();
+    char *held = calloc(1, NOTES * sizeof(char));
 
-    initscr();
+    SDL_Event key_event;
 
-    cbreak();
-    nodelay(stdscr, 1);
-    noecho();
+    char instrument[10];
+    strcpy(instrument, "sin");
 
     while (1)
     {
-        char c = getch();
-
-        if (c != ERR)
+        while (SDL_PollEvent(&key_event))
         {
-            printf("recieved: [%c]\n", c);
-            refresh();
+            if (key_event.type == SDL_KEYDOWN)
+            {
+                SDL_KeyboardEvent *key = &key_event.key;
+                char keystroke = SDL_GetKeyName(key->keysym.sym)[0];
+
+                for (int i = 0; i < NOTES; i++)
+                {
+                    if (keys[i].button == keystroke && held[i] == 0)
+                    {
+                        held[i] = 1;
+
+                        note_message data;
+                        data.note_id[0] = 'p';
+                        strcpy(data.note, keys[i].note);
+                        strcpy(data.instrument, instrument);
+
+                        write(output, &data, sizeof(note_message));
+
+                        break;
+                    }
+                }
+            }
+            else if (key_event.type == SDL_KEYUP)
+            {
+                SDL_KeyboardEvent *key = &key_event.key;
+                char keystroke = SDL_GetKeyName(key->keysym.sym)[0];
+                
+                for (int i = 0; i < NOTES; i++)
+                {
+                    if (keys[i].button == keystroke)
+                    {
+                        held[i] = 0;
+
+                        note_message data;
+                        data.note_id[0] = 's';
+                        strcpy(data.note, keys[i].note);
+                        strcpy(data.instrument, instrument);
+
+                        write(output, &data, sizeof(note_message));
+
+                        break;
+                    }
+                }
+            }
         }
     }
+
+    free(keys);
+    free(held);
+    
+    SDL_Quit();
 }

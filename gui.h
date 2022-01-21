@@ -1,7 +1,7 @@
 #ifndef GUI_H
 #define GUI_H
 
-void init(SDL_Window *, SDL_Renderer *);
+void init(SDL_Window **, SDL_Renderer **);
 
 int loop(SDL_Window *, SDL_Renderer *);
 
