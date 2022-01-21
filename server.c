@@ -39,7 +39,7 @@ void server()
 
 			if (amt_read < sizeof(message))
 			{
-				c = close_connection(c, msg, rd);
+				c = close_connection(c, rd);
 			}
 			else
 			{
@@ -59,17 +59,34 @@ connections *handle_message(connections *c, message msg, int rd)
 
 		set_connection(c, rd, 1, 1);
 	}
+	else if (msg.type == OPEN_CONNECTION_MSG)
+	{
+		set_connection(c, rd, 0, 0);
+
+		if (rd == msg.data.open_data.id)
+		{
+			write_connections(c, msg);
+		}
+		else
+		{
+			c = close_connection(c, rd);
+		}
+
+		set_connection(c, rd, 1, 1);
+	}
 	else if (msg.type == CLOSE_CONNECTION_MSG)
 	{
-		c = close_connection(c, msg, rd);
+		c = close_connection(c, rd);
 	}
 
 	return c;
 }
 
-connections *close_connection(connections *c, message msg, int rd)
+connections *close_connection(connections *c, int rd)
 {
 	info("connection being removed from server");
+
+	message msg;
 
 	c = remove_connection(c, rd);
 	msg.type = KICK_CONNECTION_MSG;

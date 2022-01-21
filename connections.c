@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "connections.h"
 
@@ -36,6 +37,8 @@ connections *remove_connection(connections *c, int descriptor)
     {
         return c;
     }
+
+    close(descriptor);
     
     if (c->descriptor == descriptor)
     {
