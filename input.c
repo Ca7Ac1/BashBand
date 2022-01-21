@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <ncurses.h>
+#include <SDL2/SDL.h>
 
 #include "log.h"
 #include "synth.h"
@@ -46,21 +46,33 @@ int input()
     close(pipe_des[0]);
 
     key *keys = setup_notes();
-
-    initscr();
-
-    cbreak();
-    nodelay(stdscr, 1);
-    noecho();
+    SDL_Event key_event;
 
     while (1)
     {
-        char c = getch();
-
-        if (c != ERR)
+        while (SDL_PollEvent(&key_event))
         {
-            printf("recieved: [%c]\n", c);
-            refresh();
+            if (key_event.type == SDL_KEYDOWN)
+            {
+                SDL_KeyboardEvent *key = &key_event.key;
+                const char *keystroke = SDL_GetKeyName(key->keysym.sym);
+                printf("%s pressed\n", keystroke);
+
+                if (keystroke[0] == 'q')
+                {
+                    SDL_Quit();
+                    exit(0);
+                }
+            }
+            else if (key_event.type == SDL_KEYUP)
+            {
+                SDL_KeyboardEvent *key = &key_event.key;
+                const char *keystroke = SDL_GetKeyName(key->keysym.sym);
+                printf("%s released\n", keystroke);
+            }
         }
     }
+
+    free(keys);
+    SDL_Quit();
 }
