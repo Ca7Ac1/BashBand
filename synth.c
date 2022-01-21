@@ -18,7 +18,7 @@ int play(char *instrument, char *note)
     }
     else
     {
-        char *log_msg[25];
+        char log_msg[100];
         sprintf(log_msg, "instrument: %s, note: %s", instrument, note);
         info(log_msg);
 
