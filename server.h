@@ -9,6 +9,6 @@
 
 void server();
 connections *handle_message(connections *c, message msg, int rd);
-connections *close_connection(connections *c, message msg, int rd);
+connections *close_connection(connections *c, int rd);
 
 #endif
