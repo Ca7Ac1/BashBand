@@ -14,4 +14,6 @@ typedef struct key
 key* setup_notes();
 int input();
 
+int isKeyDown(char);
+
 #endif

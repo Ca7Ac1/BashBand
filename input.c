@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <SDL2/SDL.h>
+// #include <time.h>
 
 #include "log.h"
 #include "message.h"
@@ -27,6 +28,11 @@ key *setup_notes()
     key_notes[11] = (key){.button = 'm', .note = "B"};
 
     return key_notes;
+}
+
+int isKeyDown(char c) {
+    // return rand() & 1;
+    return 0;
 }
 
 int input()
