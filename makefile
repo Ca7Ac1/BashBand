@@ -15,6 +15,9 @@ client.o: client.c client.h
 connections.o: connections.c connections.h
 	gcc -c connections.c
 
+gui.o: gui.c gui.h
+	gcc -c gui.c `sdl2-config --cflags --libs`
+
 input.o: input.c input.h
 	gcc -c input.c -lncurses
 
@@ -27,11 +30,11 @@ networking.o: networking.c networking.h
 synth.o: synth.c synth.h
 	gcc -c synth.c
 
-test: test.o input.o synth.o
-	gcc -o test test.o log.o input.o synth.o -lncurses
+test: test.o input.o synth.o gui.o
+	gcc -o test test.o log.o input.o synth.o gui.o -lncurses `sdl2-config --cflags --libs`
 
 test.o: test.c
-	gcc -c test.c
+	gcc -c test.c `sdl2-config --cflags --libs`
 
 clean: 
 	rm -f *.o
