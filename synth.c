@@ -12,15 +12,17 @@ int play(char *instrument, char *note)
     int c = fork();
     err_info(c, "Forking to play sound");
 
+    char log_msg[100];
+        sprintf(log_msg, "instrument: %s, note: %s", instrument, note);
+        info(log_msg);
+        
     if (c)
     {
         return c;
     }
     else
     {
-        char log_msg[100];
-        sprintf(log_msg, "instrument: %s, note: %s", instrument, note);
-        info(log_msg);
+        
 
         char *cmd[] = {"play", "-qn", "synth", "100", instrument, note, NULL};
         execvp(cmd[0], cmd);
