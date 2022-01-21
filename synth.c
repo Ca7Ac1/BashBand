@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
 #include <string.h>
@@ -17,6 +18,10 @@ int play(char *instrument, char *note)
     }
     else
     {
+        char *log_msg[25];
+        sprintf(log_msg, "instrument: %s, note: %s", instrument, note);
+        info(log_msg);
+
         char *cmd[] = {"play", "-qn", "synth", "100", instrument, note, NULL};
         execvp(cmd[0], cmd);
 
