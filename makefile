@@ -39,6 +39,7 @@ test.o: test.c
 clean:
 	rm -f *.o
 	rm -f *.exe
+	rm -f *.txt
 	rm -f server
 	rm -f client
 	rm -f test
