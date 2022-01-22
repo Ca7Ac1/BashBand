@@ -92,6 +92,8 @@ notes *free_notes(notes *n)
     {
         notes *temp = n;
         n = n->next;
+        
+        stop(temp->pid);
         free(temp);
     }
 
