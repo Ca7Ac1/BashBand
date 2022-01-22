@@ -1,4 +1,4 @@
-all: server client test
+all: server client client_test
 
 server: server.o log.o networking.o connections.o server.h log.h networking.h connections.h
 	gcc -o server server.o log.o connections.o networking.o
@@ -36,11 +36,18 @@ test: test.o input.o synth.o gui.o
 test.o: test.c
 	gcc -c test.c `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
 
+client_test: client_test.o log.o networking.o synth.o gui.o client_test.h log.h networking.h connections.h synth.h gui.h
+	gcc -o client_test client_test.o log.o connections.o synth.o networking.o gui.o `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
+
+client_test.o: client_test.c client_test.h
+	gcc -c client_test.c
+
 clean:
 	rm -f *.o
 	rm -f *.exe
 	rm -f *.txt
 	rm -f server
 	rm -f client
+	rm -f client_test
 	rm -f test
 	rm -f a.out

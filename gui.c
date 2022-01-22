@@ -4,9 +4,13 @@
 // #include <SDL2/SDL_ttf.h>
 
 #include "gui.h"
-#include "input.h"
 
 char* buttons = "zxcvbnm,sdghj";
+
+char isKeyDown(char key)
+{
+    return 0;
+}
 
 void init(SDL_Window** window, SDL_Renderer** renderer) {
     SDL_Init( SDL_INIT_EVERYTHING );

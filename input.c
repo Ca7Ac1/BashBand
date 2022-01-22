@@ -31,11 +31,6 @@ key *setup_notes()
     return key_notes;
 }
 
-int isKeyDown(char c) {
-    // return rand() & 1;
-    return 0;
-}
-
 int input()
 {
     int pipe_des[2];
