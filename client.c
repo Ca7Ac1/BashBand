@@ -3,8 +3,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "input.h"
+#include "gui.h"
 #include "synth.h"
 #include "client.h"
 #include "message.h"
@@ -13,8 +16,17 @@
 
 int main()
 {
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    TTF_Font *font;
+    font = TTF_OpenFont("fonts/OpenSans-Regular.ttf", 24);
+    init(&window, &renderer);
+
     setup_log(STDOUT_FILENO);
+    
     client();
+
+    return 0;
 }
 
 void client()

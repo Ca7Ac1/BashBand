@@ -7,6 +7,7 @@
 #include "log.h"
 #include "message.h"
 #include "input.h"
+#include "gui.h"
 
 key *setup_notes()
 {
@@ -14,18 +15,18 @@ key *setup_notes()
     // 0: C, 1: C#, 2: D, 3: D#, 4: E, 5: F, 6: F#, 7: G, 8: G#, 9: A, 10: A#, 11: B
 
     key *key_notes = malloc(sizeof(key) * NOTES);
-    key_notes[0] = (key){.button = 'z', .note = "C"};
-    key_notes[1] = (key){.button = 's', .note = "C#"};
-    key_notes[2] = (key){.button = 'x', .note = "D"};
-    key_notes[3] = (key){.button = 'd', .note = "D#"};
-    key_notes[4] = (key){.button = 'c', .note = "E"};
-    key_notes[5] = (key){.button = 'v', .note = "F"};
-    key_notes[6] = (key){.button = 'g', .note = "F#"};
-    key_notes[7] = (key){.button = 'b', .note = "G"};
-    key_notes[8] = (key){.button = 'h', .note = "G#"};
-    key_notes[9] = (key){.button = 'n', .note = "A"};
-    key_notes[10] = (key){.button = 'j', .note = "A#"};
-    key_notes[11] = (key){.button = 'm', .note = "B"};
+    key_notes[0] = (key){.button = 'Z', .note = "C"};
+    key_notes[1] = (key){.button = 'S', .note = "C#"};
+    key_notes[2] = (key){.button = 'X', .note = "D"};
+    key_notes[3] = (key){.button = 'D', .note = "D#"};
+    key_notes[4] = (key){.button = 'C', .note = "E"};
+    key_notes[5] = (key){.button = 'V', .note = "F"};
+    key_notes[6] = (key){.button = 'G', .note = "F#"};
+    key_notes[7] = (key){.button = 'B', .note = "G"};
+    key_notes[8] = (key){.button = 'H', .note = "G#"};
+    key_notes[9] = (key){.button = 'N', .note = "A"};
+    key_notes[10] = (key){.button = 'J', .note = "A#"};
+    key_notes[11] = (key){.button = 'M', .note = "B"};
 
     return key_notes;
 }
@@ -72,7 +73,8 @@ int input()
     // strcpy(data.instrument, "sin");
     // write(output, &data, sizeof(note_message));
     //
-
+    
+    // loop(window, renderer/*, font*/);
     while (1)
     {
         while (SDL_PollEvent(&key_event))
@@ -94,6 +96,7 @@ int input()
                         strcpy(data.instrument, instrument);
 
                         write(output, &data, sizeof(note_message));
+                        // loop(window, renderer/*, font*/);
 
                         break;
                     }
@@ -116,10 +119,13 @@ int input()
                         strcpy(data.instrument, instrument);
 
                         write(output, &data, sizeof(note_message));
-
+                        // loop(window, renderer/*, font*/);
                         break;
                     }
                 }
+            }
+            else if (key_event.type == SDL_QUIT) {
+                kill_SDL(window, renderer);
             }
         }
     }
