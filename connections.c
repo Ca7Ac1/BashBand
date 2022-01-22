@@ -49,6 +49,7 @@ connections *remove_connection(connections *c, int descriptor)
         return c;
     }
 
+    connections *head = c;
     while (c->next)
     {
         if (c->next->descriptor == descriptor)
@@ -57,13 +58,13 @@ connections *remove_connection(connections *c, int descriptor)
             c->next = c->next->next;
             free(temp);
 
-            return c;
+            return head;
         }
 
         c = c->next;
     }
 
-    return c;
+    return head;
 }
 
 connections *free_connections(connections *c)
