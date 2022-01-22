@@ -24,12 +24,12 @@ int main()
 
     setup_log(STDOUT_FILENO);
     
-    client();
+    client(NULL, NULL, NULL);
 
     return 0;
 }
 
-void client()
+void client(char *ip, char *port, char *name)
 {
     int client_socket = client_setup(CLIENT_ADDR, CLIENT_PORT);
     int input_fd = input();

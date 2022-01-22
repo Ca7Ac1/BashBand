@@ -6,6 +6,6 @@
 
 #include "message.h"
 
-void client();
+void client(char *ip, char *port, char *name);
 
 #endif
