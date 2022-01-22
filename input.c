@@ -124,9 +124,9 @@ int input()
                     }
                 }
             }
-            else if (key_event.type == SDL_QUIT) {
-                kill_SDL(window, renderer);
-            }
+            // else if (key_event.type == SDL_QUIT) {
+            //     kill_SDL(window, renderer);
+            // }
         }
     }
 

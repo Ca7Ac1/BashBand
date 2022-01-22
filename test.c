@@ -23,11 +23,11 @@ int main()
     font = TTF_OpenFont("fonts/OpenSans-Regular.ttf", 24);
     
 
-    while (loop(window, renderer, font)) { 
+    while (loop(window, renderer/*, font*/)) { 
         SDL_Delay(10); 
     }
 
-    kill(window, renderer);
+    kill_SDL(window, renderer);
 
     // setup_log(STDOUT_FILENO);
     // int pid = 0;

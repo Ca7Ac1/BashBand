@@ -100,7 +100,7 @@ int loop(SDL_Window* window, SDL_Renderer* renderer/*, TTF_Font* font*/ ) {
 //     SDL_DestroyTexture(Message);
 // }
 
-void kill(SDL_Window* window, SDL_Renderer* renderer) {
+void kill_SDL(SDL_Window* window, SDL_Renderer* renderer) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
