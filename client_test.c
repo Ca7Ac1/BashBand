@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/time.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
@@ -118,8 +120,30 @@ void set_client_defaults(char *ip, char *port, char *name)
     }
 }
 
-message *get_server_data()
+message *get_server_data(int client_socket)
 {
+    fd_set readfd;
+    FD_ZERO(&readfd);
+    FD_SET(client_socket, &readfd);
+
+    struct timeval timeout;
+    timeout.tv_sec = 0;
+    timeout.tv_usec = 5000;
+
+    int max = client_socket + 1;
+
+    
+    int size = select(max, &readfd, NULL, NULL, &timeout);
+
+    if (size == 1)
+    {
+        message *msg = malloc(sizeof(message));
+        size = read(client_socket, msg, sizeof(message));
+
+        err(size == sizeof(message) ? 1 : -1);
+
+        return msg;
+    }
 
     return NULL;
 }
