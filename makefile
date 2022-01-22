@@ -3,8 +3,8 @@ all: server client test
 server: server.o log.o networking.o connections.o server.h log.h networking.h connections.h
 	gcc -o server server.o log.o connections.o networking.o
 
-client: client.o log.o networking.o synth.o connections.o input.o client.h log.h networking.h connections.h synth.h input.h
-	gcc -o client client.o log.o connections.o synth.o networking.o input.o `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
+client: client.o log.o networking.o synth.o connections.o input.o gui.o client.h log.h networking.h connections.h synth.h input.h gui.h
+	gcc -o client client.o log.o connections.o synth.o networking.o input.o gui.o `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
 
 server.o: server.c server.h
 	gcc -c server.c
