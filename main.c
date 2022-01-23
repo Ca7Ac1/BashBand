@@ -19,17 +19,14 @@ void configure_client()
     char *name_ptr = name;
     
     printf("Enter ip address (format: 123.456.789.101) or hostname or leave blank for default (default: %s): ", CLIENT_ADDR);
-    if (fgets(ip, sizeof(char) * 20, stdin) == NULL)
-    {
-        printf("bad\n");
-        exit(-1);
-    }
+    fgets(ip, sizeof(ip), stdin);
+
 
     printf("Enter port or leave blank for default (default: %s): ", CLIENT_PORT);
-    fgets(port, sizeof(char) * 10, stdin);
+    fgets(port, sizeof(port), stdin);
 
     printf("Enter user name or leave blank for default: ");
-    fgets(name, sizeof(char) * 100, stdin);
+    fgets(name, sizeof(name), stdin);
 
     ip_ptr = strsep(&ip_ptr, "\n");
     port_ptr = strsep(&port_ptr, "\n");
