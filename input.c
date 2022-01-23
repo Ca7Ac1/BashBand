@@ -24,7 +24,7 @@ key *setup_notes()
     key_notes[9] = (key){.button = 'N', .note = "A4"};
     key_notes[10] = (key){.button = 'J', .note = "A#4"};
     key_notes[11] = (key){.button = 'M', .note = "B4"};
-    key_notes[11] = (key){.button = ',', .note = "C5"};
+    key_notes[12] = (key){.button = ',', .note = "C5"};
 
     return key_notes;
 }
