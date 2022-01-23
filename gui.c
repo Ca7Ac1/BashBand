@@ -1,11 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL2/SDL.h>
-// #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
+#include <string.h>
 
 #include "gui.h"
 
 char* buttons = "zxcvbnm,sdghj";
+
+int white[] = {0, 2, 4, 5, 7, 9, 11, 12};
+int black[] = {1, 3, 6, 8, 10};
 
 char isKeyDown(char key)
 {
@@ -14,7 +18,7 @@ char isKeyDown(char key)
 
 void init(SDL_Window** window, SDL_Renderer** renderer) {
     SDL_Init( SDL_INIT_EVERYTHING );
-    // TTF_Init();
+    TTF_Init();
     SDL_Window* twindow = SDL_CreateWindow("Bash", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 960, 540, SDL_WINDOW_SHOWN);
 
     SDL_Renderer* trenderer = SDL_CreateRenderer(twindow, -1, SDL_RENDERER_ACCELERATED);
@@ -26,16 +30,7 @@ void init(SDL_Window** window, SDL_Renderer** renderer) {
 }
 
 
-int loop(SDL_Window* window, SDL_Renderer* renderer/*, TTF_Font* font*/ ) {
-    SDL_Event e;
-    while(SDL_PollEvent(&e)) {
-        switch(e.type) {
-            case SDL_QUIT:
-                return 0;
-                break;
-        }
-    }
-
+int loop(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, char* held) {
     SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
 	SDL_RenderClear( renderer );
 
@@ -46,10 +41,10 @@ int loop(SDL_Window* window, SDL_Renderer* renderer/*, TTF_Font* font*/ ) {
         char c[2];
         c[0] = buttons[i];
         c[1] = '\0';
-        if(isKeyDown(c[0])) draw_white_key(renderer, x,y, c[0], 1);
+        if(held[white[i]]) draw_white_key(renderer, x,y, c[0], 1);
         else draw_white_key(renderer, x,y, c[0], 0);
-        // SDL_Color color = { 0, 0, 0 };
-        // draw_char(x+45, y+300, font, c, color, renderer);
+        SDL_Color color = { 0, 0, 0 };
+        draw_char(x+45, y+300, font, c, color, renderer);
     }
 
     // black keys
@@ -59,14 +54,14 @@ int loop(SDL_Window* window, SDL_Renderer* renderer/*, TTF_Font* font*/ ) {
         char c[2];
         c[0] = buttons[8+i];
         c[1] = '\0';
-        if(isKeyDown(c[0])) {
+        if(held[black[i]]) {
             draw_black_key(renderer, x, y, c[0], 1);
-            // SDL_Color color = { 0, 0, 0 };
-            // draw_char(x+22, y+150, font, c, color, renderer);
+            SDL_Color color = { 0, 0, 0 };
+            draw_char(x+22, y+150, font, c, color, renderer);
         } else {
             draw_black_key(renderer, x, y, c[0], 0);
-            // SDL_Color color = { 255, 255, 255 };
-            // draw_char(x+22, y+150, font, c, color, renderer);
+            SDL_Color color = { 255, 255, 255 };
+            draw_char(x+22, y+150, font, c, color, renderer);
         }
     }
     for(int i = 0; i < 3; i++) {
@@ -75,14 +70,14 @@ int loop(SDL_Window* window, SDL_Renderer* renderer/*, TTF_Font* font*/ ) {
         char c[2];
         c[0] = buttons[8+2+i];
         c[1] = '\0';
-        if(isKeyDown(c[0])) {
+        if(held[black[2+i]]) {
             draw_black_key(renderer, x, y, c[0], 1);
-            // SDL_Color color = { 0, 0, 0 };
-            // draw_char(x+22, y+150, font, c, color, renderer);
+            SDL_Color color = { 0, 0, 0 };
+            draw_char(x+22, y+150, font, c, color, renderer);
         } else {
             draw_black_key(renderer, x, y, c[0], 0);
-            // SDL_Color color = { 255, 255, 255 };
-            // draw_char(x+22, y+150, font, c, color, renderer);
+            SDL_Color color = { 255, 255, 255 };
+            draw_char(x+22, y+150, font, c, color, renderer);
         }
     }
 
@@ -91,24 +86,24 @@ int loop(SDL_Window* window, SDL_Renderer* renderer/*, TTF_Font* font*/ ) {
     return 1;
 }
 
-// void draw_char(double dx, double dy, TTF_Font* font, char * c, SDL_Color color, SDL_Renderer* renderer) {
-//     SDL_Surface* msg = TTF_RenderText_Solid(font, c, color);
-//     SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, msg);
-//     SDL_Rect r;
-//     r.x = dx;
-//     r.y = dy;
-//     r.w = msg->w;
-//     r.h = msg->h;
-//     SDL_RenderCopy(renderer, Message, NULL, &r);
-//     SDL_FreeSurface(msg);
-//     SDL_DestroyTexture(Message);
-// }
+void draw_char(double dx, double dy, TTF_Font* font, char * c, SDL_Color color, SDL_Renderer* renderer) {
+    SDL_Surface* msg = TTF_RenderText_Solid(font, c, color);
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, msg);
+    SDL_Rect r;
+    r.x = dx;
+    r.y = dy;
+    r.w = msg->w;
+    r.h = msg->h;
+    SDL_RenderCopy(renderer, Message, NULL, &r);
+    SDL_FreeSurface(msg);
+    SDL_DestroyTexture(Message);
+}
 
 void kill_SDL(SDL_Window* window, SDL_Renderer* renderer) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    // TTF_Quit();
+    TTF_Quit();
 }
 
 void draw_white_key(SDL_Renderer* renderer, double x, double y, char c, int pressed) {

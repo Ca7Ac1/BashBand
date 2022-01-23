@@ -29,10 +29,14 @@ void client(char *ip, char *port, char *name)
 {
     SDL_Window *window;
     SDL_Renderer *renderer;
-    TTF_Font *font;
-    font = TTF_OpenFont("fonts/OpenSans-Regular.ttf", 24);
     init(&window, &renderer);
+    
+    TTF_Font *font;
+    font=TTF_OpenFont("./fonts/OpenSans-Regular.ttf", 20);
 
+    if(!font) {
+        printf("TTF_OpenFont: %s\n", TTF_GetError());
+    }
     int client_socket;
     int id = open_connection(&client_socket, ip, port, name);
 
@@ -79,8 +83,11 @@ void client(char *ip, char *port, char *name)
             else if (event.type == SDL_QUIT)
             {
                 kill_SDL(window, renderer);
+                return;
             }
         }
+
+        loop(window, renderer, font, held);
     }
 }
 
