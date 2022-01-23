@@ -3,7 +3,6 @@
 
 #define CLIENT_ADDR "127.0.0.1"
 #define CLIENT_PORT "9001"
-#define NOTES 13
 
 #include <SDL2/SDL.h>
 

@@ -1,7 +1,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#define NOTES 12
+#define NOTES 13
 
 #include "message.h"
 #include "synth.h"
