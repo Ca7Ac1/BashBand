@@ -20,6 +20,7 @@ void err(int e)
 
         write(log_descriptor, err_des, sizeof(char) * strlen(err_des));
         write(log_descriptor, err_msg, sizeof(char) * strlen(err_msg));
+        
         SDL_Quit();
         exit(-1);
     }
@@ -39,7 +40,8 @@ void err_info(int e, char *msg)
 
         write(log_descriptor, err_des, sizeof(char) * strlen(err_des));
         write(log_descriptor, err_msg, sizeof(char) * strlen(err_msg));
-
+        
+        SDL_Quit();
         exit(-1);
     }
 }

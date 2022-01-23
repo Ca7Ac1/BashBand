@@ -8,7 +8,7 @@
 #include "connections.h"
 
 void server();
-connections *handle_message(connections *c, message msg, int rd);
+connections *handle_server_message(connections *c, message msg, int rd);
 connections *close_connection(connections *c, int rd);
 
 #endif

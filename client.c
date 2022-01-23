@@ -15,15 +15,15 @@
 #include "networking.h"
 #include "log.h"
 
-int main()
-{
+// int main()
+// {
 
-    setup_log(STDOUT_FILENO);
+//     setup_log(STDOUT_FILENO);
 
-    client(CLIENT_ADDR, CLIENT_PORT, "user");
+//     client(CLIENT_ADDR, CLIENT_PORT, "user");
 
-    return 0;
-}
+//     return 0;
+// }
 
 void client(char *ip, char *port, char *name)
 {
@@ -48,7 +48,7 @@ void client(char *ip, char *port, char *name)
 
         if (input_data)
         {
-            n = handle_message(n, client_socket, input_data);
+            n = handle_client_message(n, client_socket, input_data);
             free(input_data);
         }
 
@@ -129,7 +129,7 @@ message *get_server_data(int client_socket)
     return NULL;
 }
 
-notes *handle_message(notes *n, int rd, message *msg)
+notes *handle_client_message(notes *n, int rd, message *msg)
 {
     if (msg->type == KICK_CONNECTION_MSG)
     {

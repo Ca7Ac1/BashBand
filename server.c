@@ -8,11 +8,11 @@
 #include "networking.h"
 #include "log.h"
 
-int main()
-{
-	setup_log(STDOUT_FILENO);
-	server();
-}
+// int main()
+// {
+// 	setup_log(STDOUT_FILENO);
+// 	server();
+// }
 
 void server()
 {
@@ -43,13 +43,13 @@ void server()
 			}
 			else
 			{
-				c = handle_message(c, msg, rd);
+				c = handle_server_message(c, msg, rd);
 			}
 		}
 	}
 }
 
-connections *handle_message(connections *c, message msg, int rd)
+connections *handle_server_message(connections *c, message msg, int rd)
 {
 	if (msg.type == PLAY_NOTE_MSG || msg.type == STOP_NOTE_MSG)
 	{

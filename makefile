@@ -1,25 +1,28 @@
-all: server bad_client client
+all: server client main
+
+main: main.o server client
+	gcc -o main main.o server.o client.o log.o networking.o connections.o synth.o gui.o `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
+
+main.o: main.c
+	gcc -c main.c
 
 server: server.o log.o networking.o connections.o server.h log.h networking.h connections.h
-	gcc -o server server.o log.o connections.o networking.o `sdl2-config --cflags --libs`
-
-bad_client: bad_client.o log.o networking.o synth.o connections.o input.o gui.o client.h log.h networking.h connections.h synth.h input.h gui.h
-	gcc -o bad_client bad_client.o log.o connections.o synth.o networking.o input.o gui.o `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
+	# gcc -o server server.o log.o connections.o networking.o `sdl2-config --cflags --libs`
 
 server.o: server.c server.h
 	gcc -c server.c
 
-bad_client.o: bad_client.c bad_client.h
-	gcc -c bad_client.c
+client: client.o log.o networking.o synth.o gui.o client.h log.h networking.h connections.h synth.h gui.h
+	# gcc -o client client.o log.o connections.o synth.o networking.o gui.o `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
+
+client.o: client.c client.h
+	gcc -c client.c
 
 connections.o: connections.c connections.h
 	gcc -c connections.c
 
 gui.o: gui.c gui.h
 	gcc -c gui.c `sdl2-config --cflags --libs`
-
-input.o: input.c input.h
-	gcc -c input.c
 
 log.o: log.c log.h
 	gcc -c log.c
@@ -30,24 +33,13 @@ networking.o: networking.c networking.h
 synth.o: synth.c synth.h
 	gcc -c synth.c
 
-test: test.o input.o synth.o gui.o
-	gcc -o test test.o log.o input.o synth.o gui.o -lncurses `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
-
-test.o: test.c
-	gcc -c test.c `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
-
-client: client.o log.o networking.o synth.o gui.o client.h log.h networking.h connections.h synth.h gui.h
-	gcc -o client client.o log.o connections.o synth.o networking.o gui.o `sdl2-config --cflags --libs` -Wall -lSDL2_ttf
-
-client.o: client.c client.h
-	gcc -c client.c
-
 clean:
 	rm -f *.o
 	rm -f *.exe
 	rm -f *.txt
+	rm -f main
 	rm -f server
-	rm -f bad_client
 	rm -f client
+	rm -f bad_client
 	rm -f test
 	rm -f a.out
