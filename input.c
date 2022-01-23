@@ -12,18 +12,19 @@ key *setup_notes()
     // 0: C, 1: C#, 2: D, 3: D#, 4: E, 5: F, 6: F#, 7: G, 8: G#, 9: A, 10: A#, 11: B
 
     key *key_notes = malloc(sizeof(key) * NOTES);
-    key_notes[0] = (key){.button = 'Z', .note = "C"};
-    key_notes[1] = (key){.button = 'S', .note = "C#"};
-    key_notes[2] = (key){.button = 'X', .note = "D"};
-    key_notes[3] = (key){.button = 'D', .note = "D#"};
-    key_notes[4] = (key){.button = 'C', .note = "E"};
-    key_notes[5] = (key){.button = 'V', .note = "F"};
-    key_notes[6] = (key){.button = 'G', .note = "F#"};
-    key_notes[7] = (key){.button = 'B', .note = "G"};
-    key_notes[8] = (key){.button = 'H', .note = "G#"};
-    key_notes[9] = (key){.button = 'N', .note = "A"};
-    key_notes[10] = (key){.button = 'J', .note = "A#"};
-    key_notes[11] = (key){.button = 'M', .note = "B"};
+    key_notes[0] = (key){.button = 'Z', .note = "C4"};
+    key_notes[1] = (key){.button = 'S', .note = "C#4"};
+    key_notes[2] = (key){.button = 'X', .note = "D4"};
+    key_notes[3] = (key){.button = 'D', .note = "D#4"};
+    key_notes[4] = (key){.button = 'C', .note = "E4"};
+    key_notes[5] = (key){.button = 'V', .note = "F4"};
+    key_notes[6] = (key){.button = 'G', .note = "F#4"};
+    key_notes[7] = (key){.button = 'B', .note = "G4"};
+    key_notes[8] = (key){.button = 'H', .note = "G#4"};
+    key_notes[9] = (key){.button = 'N', .note = "A4"};
+    key_notes[10] = (key){.button = 'J', .note = "A#4"};
+    key_notes[11] = (key){.button = 'M', .note = "B4"};
+    key_notes[11] = (key){.button = ',', .note = "C5"};
 
     return key_notes;
 }
