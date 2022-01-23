@@ -1,13 +1,10 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <SDL2/SDL.h>
-// #include <time.h>
 
-#include "log.h"
-#include "message.h"
 #include "input.h"
-#include "gui.h"
+#include "synth.h"
+#include "log.h"
 
 key *setup_notes()
 {
@@ -31,103 +28,57 @@ key *setup_notes()
     return key_notes;
 }
 
-int input()
+int get_note_pressed(SDL_Event event, key *keys)
 {
-    int pipe_des[2];
-    pipe(pipe_des);
+    SDL_KeyboardEvent *key = &event.key;
+    char keystroke = SDL_GetKeyName(key->keysym.sym)[0];
 
-    int c = fork();
-    err(c);
-
-    if (c)
+    for (int i = 0; i < NOTES; i++)
     {
-        close(pipe_des[1]);
-        return pipe_des[0];
-    }
-
-    close(pipe_des[0]);
-    int output = pipe_des[1];
-
-    key *keys = setup_notes();
-    char *held = calloc(1, NOTES * sizeof(char));
-
-    SDL_Event key_event;
-
-    char instrument[10];
-    strcpy(instrument, "sin");
-
-    // test
-    // note_message data;
-    // data.note_id[0] = 'p';
-    // strcpy(data.note, "C");
-    // strcpy(data.instrument, "sin");
-    // write(output, &data, sizeof(note_message));
-
-    // data.note_id[0] = 's';
-    // strcpy(data.note, "C");
-    // strcpy(data.instrument, "sin");
-    // write(output, &data, sizeof(note_message));
-    //
-    
-    // loop(window, renderer/*, font*/);
-    while (1)
-    {
-        while (SDL_PollEvent(&key_event))
+        if (keys[i].button == keystroke)
         {
-            if (key_event.type == SDL_KEYDOWN)
-            {
-                SDL_KeyboardEvent *key = &key_event.key;
-                char keystroke = SDL_GetKeyName(key->keysym.sym)[0];
-
-                for (int i = 0; i < NOTES; i++)
-                {
-                    if (keys[i].button == keystroke && held[i] == 0)
-                    {
-                        held[i] = 1;
-
-                        note_message data;
-                        data.note_id[0] = 'p';
-                        strcpy(data.note, keys[i].note);
-                        strcpy(data.instrument, instrument);
-
-                        write(output, &data, sizeof(note_message));
-                        // loop(window, renderer/*, font*/);
-
-                        break;
-                    }
-                }
-            }
-            else if (key_event.type == SDL_KEYUP)
-            {
-                SDL_KeyboardEvent *key = &key_event.key;
-                char keystroke = SDL_GetKeyName(key->keysym.sym)[0];
-
-                for (int i = 0; i < NOTES; i++)
-                {
-                    if (keys[i].button == keystroke)
-                    {
-                        held[i] = 0;
-
-                        note_message data;
-                        data.note_id[0] = 's';
-                        strcpy(data.note, keys[i].note);
-                        strcpy(data.instrument, instrument);
-
-                        write(output, &data, sizeof(note_message));
-                        // loop(window, renderer/*, font*/);
-                        break;
-                    }
-                }
-            }
-            // else if (key_event.type == SDL_QUIT) {
-            //     kill_SDL(window, renderer);
-            // }
+            return i;
         }
     }
 
-    free(keys);
-    free(held);
+    return -1;
+}
 
-    SDL_Quit();
-    exit(0);
+notes *play_input(notes *n, int client_socket, char *note, char *instrument, int id)
+{
+    char msg_id[25];
+    sprintf(msg_id, "%d-%s-%s", id, instrument, note);
+
+    n = add_note(n, instrument, note, msg_id);
+
+    message msg;
+    msg.type = PLAY_NOTE_MSG;
+
+    note_message *data = &msg.data.note_data;
+    strcpy(data->instrument, instrument);
+    strcpy(data->note, note);
+    strcpy(data->note_id, msg_id);
+
+    write(client_socket, &msg, sizeof(msg));
+
+    return n;
+}
+
+
+notes *stop_input(notes *n, int client_socket, char *note, char *instrument, int id)
+{
+    char msg_id[25];
+    sprintf(msg_id, "%d-%s-%s", id, instrument, note);
+
+    n = remove_note(n, msg_id);
+
+    message msg;
+    msg.type = STOP_NOTE_MSG;
+
+    stop_message *data = &msg.data.stop_data;
+    strcpy(data->note_id, msg_id);
+
+    write(client_socket, &msg, sizeof(message));
+
+    return n;
 }
