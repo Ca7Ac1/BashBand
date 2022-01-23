@@ -31,6 +31,7 @@ int play(char *instrument, char *note)
 
 void stop(int pid)
 {
+    info("stopping note");
     err(kill(pid, SIGKILL));
 }
 

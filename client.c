@@ -32,12 +32,9 @@ void client(char *ip, char *port, char *name)
     TTF_Font *font;
     font = TTF_OpenFont("fonts/OpenSans-Regular.ttf", 24);
     init(&window, &renderer);
-    set_client_defaults(ip, port, name);
 
     int client_socket;
     int id = open_connection(&client_socket, ip, port, name);
-
-    SDL_Event event;
 
     key *keys = setup_notes();
     char *held = calloc(1, NOTES * sizeof(char));
@@ -55,11 +52,12 @@ void client(char *ip, char *port, char *name)
             free(input_data);
         }
 
+        SDL_Event event;
+
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_KEYDOWN)
             {
-                // printf("keydown\n");
                 int pressed = get_note_pressed(event, keys);
 
                 if (pressed != -1 && held[pressed] == 0)
@@ -70,7 +68,6 @@ void client(char *ip, char *port, char *name)
             }
             else if (event.type == SDL_KEYUP)
             {
-                // printf("keyup\n");
                 int pressed = get_note_pressed(event, keys);
 
                 if (pressed != -1)
@@ -102,24 +99,6 @@ int open_connection(int *client_socket, char *ip, char *port, char *name)
     write(*client_socket, &open, sizeof(message));
 
     return id;
-}
-
-void set_client_defaults(char *ip, char *port, char *name)
-{
-    if (!ip)
-    {
-        strcpy(ip, CLIENT_ADDR);
-    }
-
-    if (!port)
-    {
-        strcpy(port, CLIENT_PORT);
-    }
-
-    if (!name)
-    {
-        strcpy(name, "USER");
-    }
 }
 
 message *get_server_data(int client_socket)
@@ -154,7 +133,7 @@ notes *handle_message(notes *n, int rd, message *msg)
 {
     if (msg->type == KICK_CONNECTION_MSG)
     {
-        printf("Host exited, or you were kicked\n");
+        printf("Host exited, or you lost connections\n");
         n = free_notes(n);
         exit(0);
     }
@@ -220,15 +199,17 @@ notes *play_input(notes *n, int client_socket, char *note, char *instrument, int
     char msg_id[25];
     sprintf(msg_id, "%d-%s-%s", id, instrument, note);
 
-    n = remove_note(n, msg_id);
+    n = add_note(n, instrument, note, msg_id);
 
     message msg;
-    msg.type = STOP_NOTE_MSG;
+    msg.type = PLAY_NOTE_MSG;
 
-    stop_message *data = &msg.data.stop_data;
+    note_message *data = &msg.data.note_data;
+    strcpy(data->instrument, instrument);
+    strcpy(data->note, note);
     strcpy(data->note_id, msg_id);
 
-    write(client_socket, &msg, sizeof(message));
+    write(client_socket, &msg, sizeof(msg));
 
     return n;
 }
