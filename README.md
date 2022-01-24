@@ -25,3 +25,4 @@ make
 ./main
   # follow instructions
 ```
+[Devlog](https://github.com/Ca7Ac1/BashBand/blob/main/DEVLOG.md)
