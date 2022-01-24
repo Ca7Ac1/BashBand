@@ -37,8 +37,6 @@ int loop(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, char* held,
     char draw_key[2];
     draw_key[1] = '\0';
 
-    
-
     // white keys
     for(int i = 0; i < 8; i++) {
         double x = 80+100*i;
@@ -47,7 +45,7 @@ int loop(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, char* held,
         else draw_white_key(renderer, x,y, 0);
         draw_key[0] = keys[white[i]].button;
         SDL_Color color = { 0, 0, 0 };
-        draw_char(x+45, y+300, font, draw_key, color, renderer);
+        draw_text(x+45, y+300, font, draw_key, color, renderer);
     }
 
     // black keys
@@ -58,12 +56,12 @@ int loop(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, char* held,
             draw_black_key(renderer, x, y, 1);
             draw_key[0] = keys[black[i]].button;
             SDL_Color color = { 0, 0, 0 };
-            draw_char(x+22, y+150, font, draw_key, color, renderer);
+            draw_text(x+22, y+150, font, draw_key, color, renderer);
         } else {
             draw_black_key(renderer, x, y, 0);
             draw_key[0] = keys[black[i]].button;
             SDL_Color color = { 255, 255, 255 };
-            draw_char(x+22, y+150, font, draw_key, color, renderer);
+            draw_text(x+22, y+150, font, draw_key, color, renderer);
         }
     }
     for(int i = 0; i < 3; i++) {
@@ -73,21 +71,40 @@ int loop(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, char* held,
             draw_black_key(renderer, x, y, 1);
             draw_key[0] = keys[black[i+2]].button;
             SDL_Color color = { 0, 0, 0 };
-            draw_char(x+22, y+150, font, draw_key, color, renderer);
+            draw_text(x+22, y+150, font, draw_key, color, renderer);
         } else {
             draw_black_key(renderer, x, y, 0);
             draw_key[0] = keys[black[i+2]].button;
             SDL_Color color = { 255, 255, 255 };
-            draw_char(x+22, y+150, font, draw_key, color, renderer);
+            draw_text(x+22, y+150, font, draw_key, color, renderer);
         }
     }
 
+    
+    SDL_Color color = {255,255,255};
+    SDL_Rect r;
+    r.x = 400;
+    r.y = 0;
+    r.w = 200;
+    r.h = 50;
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(renderer, &r);
+    draw_text(420, 20, font, "BASH BAND", color, renderer);
+    r.x = 50;
+    r.y = 480;
+    r.w = 400;
+    r.h = 50;
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(renderer, &r);
+    char msg[22];
+    sprintf(msg, "Press %c for settings", settings);
+    draw_text(50, 480, font, msg, color, renderer);
 
     SDL_RenderPresent(renderer);
     return 1;
 }
 
-void draw_char(double dx, double dy, TTF_Font* font, char * c, SDL_Color color, SDL_Renderer* renderer) {
+void draw_text(double dx, double dy, TTF_Font* font, char * c, SDL_Color color, SDL_Renderer* renderer) {
     SDL_Surface* msg = TTF_RenderText_Solid(font, c, color);
     SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, msg);
     SDL_Rect r;
