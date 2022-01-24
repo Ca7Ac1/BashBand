@@ -107,40 +107,40 @@ void change_instrument(char *instrument)
     char input[100];
 
     printf("Choose an instrument\n");
-    printf("1: Piano\n2: Guitar\n3: Square\n4: Triangle\n5: Sawtooth\n6: Trapezium\n7: Exp\n8: Whitenoise");
-    fgets(input, sizeof(input), stdin);
+    printf("1: Piano\n2: Guitar\n3: Square\n4: Triangle\n5: Sawtooth\n6: Trapezium\n7: Exp\n8: Whitenoise\n");
 
     while (1)
     {
-        if (input[0] == 1)
+        fgets(input, sizeof(input), stdin);
+        if (input[0] == '1')
         {
             strcpy(instrument, "sin");
         }
-        else if (input[0] == 2)
+        else if (input[0] == '2')
         {
             strcpy(instrument, "pluck");
         }
-        else if (input[0] == 3)
+        else if (input[0] == '3')
         {
             strcpy(instrument, "square");
         }
-        else if (input[0] == 4)
+        else if (input[0] == '4')
         {
             strcpy(instrument, "triangle");
         }
-        else if (input[0] == 5)
+        else if (input[0] == '5')
         {
             strcpy(instrument, "sawtooth");
         }
-        else if (input[0] == 6)
+        else if (input[0] == '6')
         {
             strcpy(instrument, "trapezium");
         }
-        else if (input[0] == 7)
+        else if (input[0] == '7')
         {
             strcpy(instrument, "exp");
         }
-        else if (input[0] == 8)
+        else if (input[0] == '8')
         {
             strcpy(instrument, "whitenoise");
         }
