@@ -1,35 +1,12 @@
+#include <stdio.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <SDL2/SDL.h>
 
 #include "input.h"
 #include "synth.h"
 #include "log.h"
 
-key *setup_notes()
-{
-    // if(file == NULL) {
-    // 0: C, 1: C#, 2: D, 3: D#, 4: E, 5: F, 6: F#, 7: G, 8: G#, 9: A, 10: A#, 11: B
-
-    key *key_notes = malloc(sizeof(key) * NOTES);
-    key_notes[0] = (key){.button = 'Z', .note = "C4"};
-    key_notes[1] = (key){.button = 'S', .note = "C#4"};
-    key_notes[2] = (key){.button = 'X', .note = "D4"};
-    key_notes[3] = (key){.button = 'D', .note = "D#4"};
-    key_notes[4] = (key){.button = 'C', .note = "E4"};
-    key_notes[5] = (key){.button = 'V', .note = "F4"};
-    key_notes[6] = (key){.button = 'G', .note = "F#4"};
-    key_notes[7] = (key){.button = 'B', .note = "G4"};
-    key_notes[8] = (key){.button = 'H', .note = "G#4"};
-    key_notes[9] = (key){.button = 'N', .note = "A4"};
-    key_notes[10] = (key){.button = 'J', .note = "A#4"};
-    key_notes[11] = (key){.button = 'M', .note = "B4"};
-    key_notes[12] = (key){.button = ',', .note = "C5"};
-
-    return key_notes;
-}
-
-int get_note_pressed(SDL_Event event, key *keys)
+int get_note_pressed(SDL_Event event, key *keys, char settings)
 {
     SDL_KeyboardEvent *key = &event.key;
     char keystroke = SDL_GetKeyName(key->keysym.sym)[0];
@@ -42,7 +19,12 @@ int get_note_pressed(SDL_Event event, key *keys)
         }
     }
 
-    return -1;
+    if (keystroke == settings)
+    {
+        return -1;
+    }
+
+    return -2;
 }
 
 notes *play_input(notes *n, int client_socket, char *note, char *instrument, int id)
@@ -65,7 +47,6 @@ notes *play_input(notes *n, int client_socket, char *note, char *instrument, int
     return n;
 }
 
-
 notes *stop_input(notes *n, int client_socket, char *note, char *instrument, int id)
 {
     char msg_id[25];
@@ -82,4 +63,24 @@ notes *stop_input(notes *n, int client_socket, char *note, char *instrument, int
     write(client_socket, &msg, sizeof(message));
 
     return n;
+}
+
+notes *stop_all_notes(notes *n, int client_socket)
+{
+    notes *temp = n;
+
+    while (temp)
+    {
+        message msg;
+        msg.type = STOP_NOTE_MSG;
+
+        stop_message *data = &msg.data.stop_data;
+        strcpy(data->note_id, temp->id);
+
+        write(client_socket, &msg, sizeof(message));
+
+        temp = temp->next;
+    }
+
+    return free_notes(n);
 }

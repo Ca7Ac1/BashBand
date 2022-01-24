@@ -32,17 +32,17 @@ void configure_client()
     port_ptr = strsep(&port_ptr, "\n");
     name_ptr = strsep(&name_ptr, "\n");
 
-    if (strlen(ip_ptr) < 7)
+    if (ip_ptr[0] == '\0' || ip_ptr[0] == '\n')
     {
         strcpy(ip_ptr, CLIENT_ADDR);
     }
 
-    if (strlen(port_ptr) < 7)
+    if (port_ptr[0] == '\0' || port_ptr[0] == '\n')
     {
         strcpy(port_ptr, CLIENT_PORT);
     }
 
-    if (strlen(name_ptr) < 7)
+    if (name_ptr[0] == '\0' || name_ptr[0] == '\n')
     {
         strcpy(name_ptr, "User");
     }
@@ -74,7 +74,7 @@ int main()
         {
             int c = fork();
 
-            if (c)
+            if (!c)
             {
                 server();
             }

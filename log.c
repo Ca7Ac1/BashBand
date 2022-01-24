@@ -2,6 +2,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <SDL2/SDL.h>
 
 #include "log.h"
@@ -22,7 +23,7 @@ void err(int e)
         write(log_descriptor, err_msg, sizeof(char) * strlen(err_msg));
         
         SDL_Quit();
-        exit(-1);
+        kill(-1 * getpid(), SIGKILL);
     }
 }
 
@@ -42,7 +43,7 @@ void err_info(int e, char *msg)
         write(log_descriptor, err_msg, sizeof(char) * strlen(err_msg));
         
         SDL_Quit();
-        exit(-1);
+        kill(-1 * getpid(), SIGKILL);
     }
 }
 

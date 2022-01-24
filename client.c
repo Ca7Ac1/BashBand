@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <signal.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/time.h>
@@ -10,6 +11,7 @@
 
 #include "client.h"
 #include "input.h"
+#include "settings.h"
 #include "gui.h"
 #include "synth.h"
 #include "message.h"
@@ -41,8 +43,9 @@ void client(char *ip, char *port, char *name)
     int client_socket;
     int id = open_connection(&client_socket, ip, port, name);
 
-    key *keys = setup_notes();
+    key *keys = setup_notes(NULL);
     char *held = calloc(1, NOTES * sizeof(char));
+    char settings = 'q';
 
     notes *n = NULL;
     char instrument[10] = "sin";
@@ -63,28 +66,45 @@ void client(char *ip, char *port, char *name)
         {
             if (event.type == SDL_KEYDOWN)
             {
-                int pressed = get_note_pressed(event, keys);
+                int pressed = get_note_pressed(event, keys, settings);
 
-                if (pressed != -1 && held[pressed] == 0)
+                if (pressed == -1)
+                {       
+                    n = stop_all_notes(n, client_socket);
+                    
+                    for (int i = 0; i < NOTES; i++)
+                    {
+                        held[i] = 0;
+                    }
+
+                    loop(window, renderer, font, held);
+                    alter_settings(&settings, instrument, &keys);
+                }
+                else if (pressed >= 0 && held[pressed] == 0)
                 {
                     held[pressed] = 1;
                     n = play_input(n, client_socket, keys[pressed].note, instrument, id);
                 }
+
+                break;
             }
             else if (event.type == SDL_KEYUP)
             {
-                int pressed = get_note_pressed(event, keys);
+                int pressed = get_note_pressed(event, keys, settings);
 
-                if (pressed != -1)
+                if (pressed >= 0)
                 {
                     held[pressed] = 0;
                     n = stop_input(n, client_socket, keys[pressed].note, instrument, id);
                 }
+
+                break;
             }
             else if (event.type == SDL_QUIT)
             {
                 kill_SDL(window, renderer);
-                return;
+                kill(-1 * getpid(), SIGKILL);
+
             }
         }
 
@@ -148,7 +168,8 @@ notes *handle_client_message(notes *n, int rd, message *msg)
     else if (msg->type == OPEN_CONNECTION_MSG)
     {
         open_message *data = &msg->data.open_data;
-        printf("%s (id: %d) connected\n", data->name, data->id);
+        info("Client sees that another user connected");
+        // printf("%s (id: %d) connected\n", data->name, data->id);
     }
     else if (msg->type == PLAY_NOTE_MSG)
     {

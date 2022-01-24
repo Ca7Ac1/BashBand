@@ -3,20 +3,15 @@
 
 #define NOTES 13
 
+#include <SDL2/SDL.h>
+
 #include "message.h"
 #include "synth.h"
+#include "settings.h"
 
-// this name is beautiful appreciate it pls
-typedef struct key
-{
-    char button;
-    // C#4 null
-    char note[4];
-} key;
-
-key *setup_notes();
-int get_note_pressed(SDL_Event event, key *keys);
+int get_note_pressed(SDL_Event event, key *keys, char settings);
 notes *play_input(notes *n, int client_socket, char *note, char *instrument, int id);
 notes *stop_input(notes *n, int client_socket, char *note, char *instrument, int id);
+notes *stop_all_notes(notes *n, int client_socket);
 
 #endif

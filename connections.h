@@ -1,8 +1,6 @@
 #ifndef CONNECTIONS_H
 #define CONNECTIONS_H
 
-#include <sys/select.h>
-
 typedef struct connections
 {
     int descriptor;
