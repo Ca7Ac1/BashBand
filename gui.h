@@ -5,7 +5,7 @@
 
 void init(SDL_Window **, SDL_Renderer **);
 
-int loop(SDL_Window *, SDL_Renderer *, TTF_Font *, char *, key *);
+int loop(SDL_Window *, SDL_Renderer *, TTF_Font *, char *, key *, char);
 
 void kill_SDL(SDL_Window *, SDL_Renderer *);
 

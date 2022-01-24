@@ -48,7 +48,7 @@ void client(char *ip, char *port)
     char settings = 'Q';
 
     notes *n = NULL;
-    char instrument[10] = "sin";
+    char instrument[20] = "sin";
 
     while (1)
     {
@@ -108,7 +108,7 @@ void client(char *ip, char *port)
             }
         }
 
-        loop(window, renderer, font, held, keys);
+        loop(window, renderer, font, held, keys, settings);
     }
 }
 
