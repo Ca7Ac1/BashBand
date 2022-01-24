@@ -45,7 +45,7 @@ void client(char *ip, char *port)
 
     key *keys = setup_notes(NULL);
     char *held = calloc(1, NOTES * sizeof(char));
-    char settings = 'q';
+    char settings = 'Q';
 
     notes *n = NULL;
     char instrument[10] = "sin";
@@ -66,6 +66,7 @@ void client(char *ip, char *port)
         {
             if (event.type == SDL_KEYDOWN)
             {
+                // printf("key down\n");
                 int pressed = get_note_pressed(event, keys, settings);
 
                 if (pressed == -1)
@@ -77,7 +78,6 @@ void client(char *ip, char *port)
                         held[i] = 0;
                     }
 
-                    loop(window, renderer, font, held);
                     alter_settings(&settings, instrument, &keys);
                 }
                 else if (pressed >= 0 && held[pressed] == 0)
@@ -108,7 +108,7 @@ void client(char *ip, char *port)
             }
         }
 
-        loop(window, renderer, font, held);
+        loop(window, renderer, font, held, keys);
     }
 }
 

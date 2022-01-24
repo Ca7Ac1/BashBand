@@ -10,6 +10,12 @@ int get_note_pressed(SDL_Event event, key *keys, char settings)
 {
     SDL_KeyboardEvent *key = &event.key;
     char keystroke = SDL_GetKeyName(key->keysym.sym)[0];
+    // printf("key: %c\n", keystroke);
+
+    if (keystroke == settings)
+    {
+        return -1;
+    }
 
     for (int i = 0; i < NOTES; i++)
     {
@@ -17,11 +23,6 @@ int get_note_pressed(SDL_Event event, key *keys, char settings)
         {
             return i;
         }
-    }
-
-    if (keystroke == settings)
-    {
-        return -1;
     }
 
     return -2;

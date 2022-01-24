@@ -119,7 +119,7 @@ void change_settings_key(char *settings)
 
         if (isalnum(input[0]) && (input[1] == '\n' || input[1] == '\0'))
         {
-            settings[0] = input[0];
+            settings[0] = toupper(input[0]);
             break;
         }
         else
@@ -143,7 +143,7 @@ void change_keys(key *keys)
 
             if (isalnum(input[0]) && (input[1] == '\n' || input[1] == '\0'))
             {
-                keys[i].button = input[0];
+                keys[i].button = toupper(input[0]);
                 break;
             }
             else

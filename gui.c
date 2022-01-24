@@ -5,8 +5,8 @@
 #include <string.h>
 
 #include "gui.h"
+#include "settings.h"
 
-char* buttons = "zxcvbnm,sdghj";
 
 int white[] = {0, 2, 4, 5, 7, 9, 11, 12};
 int black[] = {1, 3, 6, 8, 10};
@@ -30,54 +30,55 @@ void init(SDL_Window** window, SDL_Renderer** renderer) {
 }
 
 
-int loop(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, char* held) {
+int loop(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, char* held, key *keys, char settings) {
     SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
 	SDL_RenderClear( renderer );
+
+    char draw_key[2];
+    draw_key[1] = '\0';
+
+    
 
     // white keys
     for(int i = 0; i < 8; i++) {
         double x = 80+100*i;
         double y = 70;
-        char c[2];
-        c[0] = buttons[i];
-        c[1] = '\0';
-        if(held[white[i]]) draw_white_key(renderer, x,y, c[0], 1);
-        else draw_white_key(renderer, x,y, c[0], 0);
+        if(held[white[i]]) draw_white_key(renderer, x,y, 1);
+        else draw_white_key(renderer, x,y, 0);
+        draw_key[0] = keys[white[i]].button;
         SDL_Color color = { 0, 0, 0 };
-        draw_char(x+45, y+300, font, c, color, renderer);
+        draw_char(x+45, y+300, font, draw_key, color, renderer);
     }
 
     // black keys
     for(int i = 0; i < 2; i++) {
         double x = 80+70+100*i;
         double y = 70;
-        char c[2];
-        c[0] = buttons[8+i];
-        c[1] = '\0';
         if(held[black[i]]) {
-            draw_black_key(renderer, x, y, c[0], 1);
+            draw_black_key(renderer, x, y, 1);
+            draw_key[0] = keys[black[i]].button;
             SDL_Color color = { 0, 0, 0 };
-            draw_char(x+22, y+150, font, c, color, renderer);
+            draw_char(x+22, y+150, font, draw_key, color, renderer);
         } else {
-            draw_black_key(renderer, x, y, c[0], 0);
+            draw_black_key(renderer, x, y, 0);
+            draw_key[0] = keys[black[i]].button;
             SDL_Color color = { 255, 255, 255 };
-            draw_char(x+22, y+150, font, c, color, renderer);
+            draw_char(x+22, y+150, font, draw_key, color, renderer);
         }
     }
     for(int i = 0; i < 3; i++) {
         double x = 380+70+100*i;
         double y = 70;
-        char c[2];
-        c[0] = buttons[8+2+i];
-        c[1] = '\0';
         if(held[black[2+i]]) {
-            draw_black_key(renderer, x, y, c[0], 1);
+            draw_black_key(renderer, x, y, 1);
+            draw_key[0] = keys[black[i+2]].button;
             SDL_Color color = { 0, 0, 0 };
-            draw_char(x+22, y+150, font, c, color, renderer);
+            draw_char(x+22, y+150, font, draw_key, color, renderer);
         } else {
-            draw_black_key(renderer, x, y, c[0], 0);
+            draw_black_key(renderer, x, y, 0);
+            draw_key[0] = keys[black[i+2]].button;
             SDL_Color color = { 255, 255, 255 };
-            draw_char(x+22, y+150, font, c, color, renderer);
+            draw_char(x+22, y+150, font, draw_key, color, renderer);
         }
     }
 
@@ -106,7 +107,7 @@ void kill_SDL(SDL_Window* window, SDL_Renderer* renderer) {
     TTF_Quit();
 }
 
-void draw_white_key(SDL_Renderer* renderer, double x, double y, char c, int pressed) {
+void draw_white_key(SDL_Renderer* renderer, double x, double y, int pressed) {
     SDL_Rect r;
     r.x = x;
     r.y = y;
@@ -119,7 +120,7 @@ void draw_white_key(SDL_Renderer* renderer, double x, double y, char c, int pres
     SDL_RenderDrawRect(renderer, &r);
 }
 
-void draw_black_key(SDL_Renderer* renderer, double x, double y, char c, int pressed) {
+void draw_black_key(SDL_Renderer* renderer, double x, double y, int pressed) {
     SDL_Rect r;
     r.x = x;
     r.y = y;
