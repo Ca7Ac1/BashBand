@@ -9,14 +9,14 @@
 
 typedef struct note_message
 {
-    char instrument[10];
+    char instrument[20];
     char note[3];
-    char note_id[25];
+    char note_id[45];
 } note_message;
 
 typedef struct stop_message
 {
-    char note_id[25];
+    char note_id[45];
 } stop_message;
 
 typedef struct open_message

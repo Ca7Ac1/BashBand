@@ -9,7 +9,7 @@ typedef struct notes
     int pid;
     char instrument[15];
     char note[4];
-    char id[25];
+    char id[45];
     struct notes *next;
 } notes;
 
