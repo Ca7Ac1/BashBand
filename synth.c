@@ -78,7 +78,7 @@ notes *remove_note(notes *n, char *id)
             n->next = n->next->next;
             free(temp);
 
-            return n;
+            return head;
         }
 
         n = n->next;

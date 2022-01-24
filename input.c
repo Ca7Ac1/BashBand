@@ -30,7 +30,7 @@ int get_note_pressed(SDL_Event event, key *keys, char settings)
 
 notes *play_input(notes *n, int client_socket, char *note, char *instrument, int id)
 {
-    char msg_id[45];
+    char msg_id[100];
     sprintf(msg_id, "%d-%s-%s", id, instrument, note);
 
     n = add_note(n, instrument, note, msg_id);
@@ -50,7 +50,7 @@ notes *play_input(notes *n, int client_socket, char *note, char *instrument, int
 
 notes *stop_input(notes *n, int client_socket, char *note, char *instrument, int id)
 {
-    char msg_id[45];
+    char msg_id[100];
     sprintf(msg_id, "%d-%s-%s", id, instrument, note);
 
     n = remove_note(n, msg_id);

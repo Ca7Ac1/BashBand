@@ -8,8 +8,8 @@ typedef struct notes
 {
     int pid;
     char instrument[15];
-    char note[4];
-    char id[45];
+    char note[5];
+    char id[100];
     struct notes *next;
 } notes;
 

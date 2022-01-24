@@ -10,13 +10,13 @@
 typedef struct note_message
 {
     char instrument[20];
-    char note[3];
-    char note_id[45];
+    char note[5];
+    char note_id[100];
 } note_message;
 
 typedef struct stop_message
 {
-    char note_id[45];
+    char note_id[100];
 } stop_message;
 
 typedef struct open_message
