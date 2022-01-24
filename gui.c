@@ -96,8 +96,8 @@ int loop(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, char* held,
     r.h = 50;
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderFillRect(renderer, &r);
-    char msg[22];
-    sprintf(msg, "Press %c for settings", settings);
+    char msg[38];
+    sprintf(msg, "Press %c to open settings in terminal", settings);
     draw_text(50, 480, font, msg, color, renderer);
 
     SDL_RenderPresent(renderer);
