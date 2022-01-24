@@ -11,17 +11,17 @@ SDL2
 SoX
 
 How to install
-'''
+```
 sudo apt install sox
 sudo apt install libsox-dev
 sudo apt-get install libsdl2-dev
 sudo apt-get install libsdl2-ttf-dev
-'''
+```
 
 How to use:
-'''
+```
 make clean
 make
 ./main
   # follow instructions
-'''
+```
