@@ -23,12 +23,12 @@
 
 //     setup_log(STDOUT_FILENO);
 
-//     client(CLIENT_ADDR, CLIENT_PORT, "user");
+//     client(CLIENT_ADDR, CLIENT_PORT);
 
 //     return 0;
 // }
 
-void client(char *ip, char *port, char *name)
+void client(char *ip, char *port)
 {
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -41,7 +41,7 @@ void client(char *ip, char *port, char *name)
         printf("TTF_OpenFont: %s\n", TTF_GetError());
     }
     int client_socket;
-    int id = open_connection(&client_socket, ip, port, name);
+    int id = open_connection(&client_socket, ip, port);
 
     key *keys = setup_notes(NULL);
     char *held = calloc(1, NOTES * sizeof(char));
@@ -112,7 +112,7 @@ void client(char *ip, char *port, char *name)
     }
 }
 
-int open_connection(int *client_socket, char *ip, char *port, char *name)
+int open_connection(int *client_socket, char *ip, char *port)
 {
     *client_socket = client_setup(ip, port);
 
@@ -123,7 +123,7 @@ int open_connection(int *client_socket, char *ip, char *port, char *name)
     message open;
     open.type = OPEN_CONNECTION_MSG;
     open.data.open_data.id = id;
-    strcpy(open.data.open_data.name, name);
+    
     write(*client_socket, &open, sizeof(message));
 
     return id;
@@ -169,7 +169,6 @@ notes *handle_client_message(notes *n, int rd, message *msg)
     {
         open_message *data = &msg->data.open_data;
         info("Client sees that another user connected");
-        // printf("%s (id: %d) connected\n", data->name, data->id);
     }
     else if (msg->type == PLAY_NOTE_MSG)
     {

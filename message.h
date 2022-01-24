@@ -22,7 +22,6 @@ typedef struct stop_message
 typedef struct open_message
 {
     int id; 
-    char name[100];
 } open_message;
 
 typedef struct close_message

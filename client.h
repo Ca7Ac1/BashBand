@@ -9,8 +9,8 @@
 #include "message.h"
 #include "synth.h"
 
-void client(char *ip, char *port, char *name);
-int open_connection(int *client_socket, char *ip, char *port, char *name);
+void client(char *ip, char *port);
+int open_connection(int *client_socket, char *ip, char *port);
 message *get_server_data();
 notes *handle_client_message(notes *n, int rd, message *msg);
 
