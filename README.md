@@ -27,4 +27,4 @@ make
 ```
 
 
-https://github.com/Ca7Ac1/BashBand/blob/main/DEVLOG.md "Devlog"
+(https://github.com/Ca7Ac1/BashBand/blob/main/DEVLOG.md "Devlog")
