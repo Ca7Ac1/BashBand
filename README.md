@@ -19,6 +19,8 @@ sudo apt-get install libsdl2-ttf-dev
 ```
 
 How to use:
+
+***NOTE: This does not work from ssh, you must be on a local computer***
 ```
 make clean
 make
