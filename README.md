@@ -10,7 +10,7 @@ Libraries:
 SDL2
 SoX
 
-How to install
+How to install dependencies:
 ```
 sudo apt install sox
 sudo apt install libsox-dev
